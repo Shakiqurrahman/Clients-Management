@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.max-width {
+  @apply max-w-[1280px] p-4 mx-auto;
+}
