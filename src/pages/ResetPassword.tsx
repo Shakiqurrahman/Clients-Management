@@ -1,30 +1,46 @@
 import GlassCard from "../components/GlassCard";
 
-const Login = () => {
+const ResetPassword = () => {
     return (
         <div className="flex justify-center items-center h-screen">
             <GlassCard className="w-full md:w-[450px] m-4">
-                <h1 className="text-2xl md:text-4xl text-center">Login</h1>
+                <h1 className="text-2xl md:text-4xl text-center">
+                    Reset Password
+                </h1>
                 <div className="bg-white/40 h-0.5 w-[100px] md:w-[120px] mt-3 mx-auto"></div>
                 <form className="space-y-2 mt-5 md:mt-10">
                     <div>
-                        <label htmlFor="username">Email:</label>
+                        <label htmlFor="username">
+                            Enter Your Old Password:
+                        </label>
                         <input
                             type="email"
                             id="email"
                             name="email"
                             className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 outline-0"
-                            placeholder="Enter your email"
+                            placeholder="Enter your old password"
                         />
                     </div>
                     <div>
-                        <label htmlFor="password">Password:</label>
+                        <label htmlFor="username">
+                            Enter your new Password:
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 outline-0"
+                            placeholder="Enter your new password"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password">Confirm Your Password:</label>
                         <input
                             type="password"
                             id="password"
                             name="password"
                             className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 outline-0"
-                            placeholder="Enter your Password"
+                            placeholder="Confirm Password"
                         />
                     </div>
                     <button
@@ -48,4 +64,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default ResetPassword;
