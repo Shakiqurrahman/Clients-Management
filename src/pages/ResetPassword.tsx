@@ -17,7 +17,7 @@ const ResetPassword = () => {
                             type="email"
                             id="email"
                             name="email"
-                            className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 outline-0"
+                            className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/10 dark:bg-white/5 outline-0"
                             placeholder="Enter your old password"
                         />
                     </div>
@@ -29,7 +29,7 @@ const ResetPassword = () => {
                             type="email"
                             id="email"
                             name="email"
-                            className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 outline-0"
+                            className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/10 dark:bg-white/5 outline-0"
                             placeholder="Enter your new password"
                         />
                     </div>
@@ -39,7 +39,7 @@ const ResetPassword = () => {
                             type="password"
                             id="password"
                             name="password"
-                            className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 outline-0"
+                            className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/10 dark:bg-white/5 outline-0"
                             placeholder="Confirm Password"
                         />
                     </div>

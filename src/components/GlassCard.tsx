@@ -3,7 +3,7 @@ const GlassCard: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
     children,
 }) => (
     <div
-        className={`group relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.3)] ${
+        className={`group relative overflow-hidden rounded-2xl border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/5 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.3)] ${
             className || ""
         }`}
     >
