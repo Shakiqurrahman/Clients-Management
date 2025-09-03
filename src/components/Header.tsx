@@ -10,7 +10,7 @@ const Header = () => {
         <section className="max-width flex justify-between items-center">
             <div className="flex gap-2 items-center">
                 <img src={logo} alt="logo" className="size-12 sm:size-16" />
-                <h1 className="text-lg font-semibold">Clients Management</h1>
+                <h1 className="text-lg font-semibold">Grameen Travels</h1>
             </div>
             <Popover>
                 <PopoverTrigger>
