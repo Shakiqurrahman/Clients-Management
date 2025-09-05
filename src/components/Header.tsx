@@ -8,10 +8,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 const Header = () => {
     return (
         <section className="max-width flex justify-between items-center">
-            <div className="flex gap-2 items-center">
+            <Link to={"/"} className="flex gap-2 items-center">
                 <img src={logo} alt="logo" className="size-12 sm:size-16" />
                 <h1 className="text-lg font-semibold">Grameen Travels</h1>
-            </div>
+            </Link>
             <Popover>
                 <PopoverTrigger>
                     <div className="flex items-center gap-2 cursor-pointer">
@@ -34,10 +34,13 @@ const Header = () => {
                     >
                         <FaGear /> <p>Edit Password</p>
                     </Link>
-                    <div className="flex items-center gap-2 cursor-pointer hover:text-gray-200 duration-200 mx-2 hover:mx-4">
+                    <Link
+                        to={"/employees"}
+                        className="flex items-center gap-2 cursor-pointer hover:text-gray-200 duration-200 mx-2 hover:mx-4"
+                    >
                         <IoPersonSharp />
                         <p>Employees</p>
-                    </div>
+                    </Link>
                     <div className="flex items-center gap-2 cursor-pointer hover:text-red-400 duration-200 mx-2 hover:mx-4">
                         <CiLogout />
                         <p>Logout</p>

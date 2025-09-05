@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router";
+import Employees from "../pages/Employees";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import ResetPassword from "../pages/ResetPassword";
@@ -12,6 +13,10 @@ export const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Home />,
+            },
+            {
+                path: "/employees",
+                element: <Employees />,
             },
         ],
     },
