@@ -13,7 +13,7 @@ import { ScrollArea } from "./ui/scroll-area";
 
 export interface Iclient {
     client: {
-        referenenceName?: string;
+        referenceName?: string;
         officeName?: string;
         clientName?: string;
         dateOfBirth?: string;
@@ -35,6 +35,10 @@ export interface Iclient {
         passportDelivery?: string;
         ticketDate?: string;
         scanCopyLink?: string;
+        medicalExpireDate?: string;
+        trainingStatus?: boolean;
+        takammolCertificate?: boolean;
+        medicalStatus?: boolean;
     };
 }
 

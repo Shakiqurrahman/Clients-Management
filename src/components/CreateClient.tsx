@@ -24,16 +24,20 @@ const CreateClient = () => {
         idNumber: z.string().min(1, "ID Number is required"),
         koffileNumber: z.string().min(1, "Koffile Number is required"),
         medicalDate: z.string().min(1, "Medical Date is required"),
+        medicalExpireDate: z.string().min(1, "Medical Date is required"),
+        medicalStatus: z.string().min(1, "Medical Date is required"),
         medicalFit: z.enum(["Yes", "No"]),
         clientNumber: z.string().min(1, "Client Number is required"),
         policeClearence: z.enum(["Yes", "No"]),
         mofaDate: z.string().min(1, "MOFA Date is required"),
         visaFingerDate: z.string().min(1, "Visa Finger Date is required"),
-        manPowerFinger: z.enum(["Yes", "No"]),
-        training: z.enum(["Yes", "No"]),
+        manPowerFingerDate: z
+            .string()
+            .min(1, "Man power finger date is required"),
+        trainingStatus: z.enum(["Yes", "No"]),
+        takammolCertificate: z.enum(["Yes", "No"]),
         curierDate: z.string().min(1, "Curier Date is required"),
         visaStatus: z.enum(["Yes", "No"]),
-        manPower: z.enum(["Yes", "No"]),
         passportDelivery: z.string().min(1, "Passport Delivery is required"),
         ticketDate: z.string().min(1, "Ticket Date is required"),
         scanCopyLink: z.string().url("Scan Copy Link must be a valid URL"),
@@ -199,7 +203,7 @@ const CreateClient = () => {
                                             <label>Medical Fit</label>
                                             <select
                                                 {...register("medicalFit")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
                                                 <option value="Yes">Yes</option>
@@ -230,7 +234,7 @@ const CreateClient = () => {
                                             <label>Police Clearence</label>
                                             <select
                                                 {...register("policeClearence")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
                                                 <option value="Yes">Yes</option>
@@ -276,18 +280,18 @@ const CreateClient = () => {
                                         </div>
                                         <div>
                                             <label>Man Power Finger</label>
-                                            <select
-                                                {...register("manPowerFinger")}
+                                            <input
+                                                type="date"
+                                                {...register(
+                                                    "manPowerFingerDate"
+                                                )}
                                                 className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
-                                            >
-                                                <option value="">Select</option>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
-                                            {errors.manPowerFinger && (
+                                            />
+                                            {errors.manPowerFingerDate && (
                                                 <span className="text-red-500 block mt-2">
                                                     {
-                                                        errors.manPowerFinger
+                                                        errors
+                                                            .manPowerFingerDate
                                                             .message
                                                     }
                                                 </span>
@@ -296,16 +300,19 @@ const CreateClient = () => {
                                         <div>
                                             <label>Training</label>
                                             <select
-                                                {...register("training")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                                {...register("trainingStatus")}
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
                                                 <option value="Yes">Yes</option>
                                                 <option value="No">No</option>
                                             </select>
-                                            {errors.training && (
+                                            {errors.trainingStatus && (
                                                 <span className="text-red-500 block mt-2">
-                                                    {errors.training.message}
+                                                    {
+                                                        errors.trainingStatus
+                                                            .message
+                                                    }
                                                 </span>
                                             )}
                                         </div>
@@ -326,7 +333,7 @@ const CreateClient = () => {
                                             <label>Visa Status</label>
                                             <select
                                                 {...register("visaStatus")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
                                                 <option value="Yes">Yes</option>
@@ -338,22 +345,7 @@ const CreateClient = () => {
                                                 </span>
                                             )}
                                         </div>
-                                        <div>
-                                            <label>Man Power</label>
-                                            <select
-                                                {...register("manPower")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
-                                            >
-                                                <option value="">Select</option>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
-                                            {errors.manPower && (
-                                                <span className="text-red-500 block mt-2">
-                                                    {errors.manPower.message}
-                                                </span>
-                                            )}
-                                        </div>
+
                                         <div>
                                             <label>Passport Delivery</label>
                                             <input

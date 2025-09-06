@@ -25,18 +25,20 @@ const EditClient = ({ client }: Iclient) => {
         idNumber: z.string().min(1, "ID Number is required"),
         koffileNumber: z.string().min(1, "Koffile Number is required"),
         medicalDate: z.string().min(1, "Medical Date is required"),
-        medicalFit: z.boolean(),
+        medicalExpireDate: z.string().min(1, "Medical Date is required"),
+        medicalStatus: z.string().min(1, "Medical Date is required"),
+        medicalFit: z.enum(["Yes", "No"]),
         clientNumber: z.string().min(1, "Client Number is required"),
-        policeClearence: z.boolean(),
+        policeClearence: z.enum(["Yes", "No"]),
         mofaDate: z.string().min(1, "MOFA Date is required"),
         visaFingerDate: z.string().min(1, "Visa Finger Date is required"),
         manPowerFingerDate: z
             .string()
-            .min(1, "Man Power Finger Date is required"),
-        training: z.boolean(),
+            .min(1, "Man power finger date is required"),
+        trainingStatus: z.enum(["Yes", "No"]),
+        takammolCertificate: z.enum(["Yes", "No"]),
         curierDate: z.string().min(1, "Curier Date is required"),
-        visaStatus: z.boolean(),
-        manPower: z.boolean(),
+        visaStatus: z.enum(["Yes", "No"]),
         passportDelivery: z.string().min(1, "Passport Delivery is required"),
         ticketDate: z.string().min(1, "Ticket Date is required"),
         scanCopyLink: z.string().url("Scan Copy Link must be a valid URL"),
@@ -51,7 +53,7 @@ const EditClient = ({ client }: Iclient) => {
     } = useForm<ClientFormValues>({
         resolver: zodResolver(clientSchema),
         defaultValues: {
-            referenceName: client.referenenceName || "",
+            referenceName: client.referenceName || "",
             officeName: client.officeName || "",
             clientName: client.clientName || "",
             dateOfBirth: client.dateOfBirth || "",
@@ -60,16 +62,48 @@ const EditClient = ({ client }: Iclient) => {
             idNumber: client.idNumber || "",
             koffileNumber: client.koffileNumber || "",
             medicalDate: client.medicalDate || "",
-            medicalFit: client.medicalFit || false,
+            medicalExpireDate: client.medicalExpireDate || "",
+            medicalStatus:
+                typeof client.medicalStatus === "boolean"
+                    ? client.medicalStatus
+                        ? "Yes"
+                        : "No"
+                    : client.medicalStatus || "No",
+            medicalFit:
+                typeof client.medicalFit === "boolean"
+                    ? client.medicalFit
+                        ? "Yes"
+                        : "No"
+                    : client.medicalFit || "No",
             clientNumber: client.clientNumber || "",
-            policeClearence: client.policeClearence || false,
+            policeClearence:
+                typeof client.policeClearence === "boolean"
+                    ? client.policeClearence
+                        ? "Yes"
+                        : "No"
+                    : client.policeClearence || "No",
             mofaDate: client.mofaDate || "",
             visaFingerDate: client.visaFingerDate || "",
             manPowerFingerDate: client.manPowerFingerDate || "",
-            training: client.training || false,
+            trainingStatus:
+                typeof client.trainingStatus === "boolean"
+                    ? client.trainingStatus
+                        ? "Yes"
+                        : "No"
+                    : client.trainingStatus || "No",
+            takammolCertificate:
+                typeof client.takammolCertificate === "boolean"
+                    ? client.takammolCertificate
+                        ? "Yes"
+                        : "No"
+                    : client.takammolCertificate || "No",
             curierDate: client.curierDate || "",
-            visaStatus: client.visaStatus || false,
-            manPower: client.manPower || false,
+            visaStatus:
+                typeof client.visaStatus === "boolean"
+                    ? client.visaStatus
+                        ? "Yes"
+                        : "No"
+                    : client.visaStatus || "No",
             passportDelivery: client.passportDelivery || "",
             ticketDate: client.ticketDate || "",
             scanCopyLink: client.scanCopyLink || "",
@@ -226,15 +260,11 @@ const EditClient = ({ client }: Iclient) => {
                                             <label>Medical Fit</label>
                                             <select
                                                 {...register("medicalFit")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
-                                                <option value="true">
-                                                    Yes
-                                                </option>
-                                                <option value="false">
-                                                    No
-                                                </option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
                                             </select>
                                             {errors.medicalFit && (
                                                 <span className="text-red-500 block mt-2">
@@ -261,15 +291,11 @@ const EditClient = ({ client }: Iclient) => {
                                             <label>Police Clearence</label>
                                             <select
                                                 {...register("policeClearence")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
-                                                <option value="true">
-                                                    Yes
-                                                </option>
-                                                <option value="false">
-                                                    No
-                                                </option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
                                             </select>
                                             {errors.policeClearence && (
                                                 <span className="text-red-500 block mt-2">
@@ -310,7 +336,7 @@ const EditClient = ({ client }: Iclient) => {
                                             )}
                                         </div>
                                         <div>
-                                            <label>Man Power Finger Date</label>
+                                            <label>Man Power Finger</label>
                                             <input
                                                 type="date"
                                                 {...register(
@@ -318,10 +344,11 @@ const EditClient = ({ client }: Iclient) => {
                                                 )}
                                                 className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                             />
-                                            {errors.visaFingerDate && (
+                                            {errors.manPowerFingerDate && (
                                                 <span className="text-red-500 block mt-2">
                                                     {
-                                                        errors.visaFingerDate
+                                                        errors
+                                                            .manPowerFingerDate
                                                             .message
                                                     }
                                                 </span>
@@ -330,20 +357,19 @@ const EditClient = ({ client }: Iclient) => {
                                         <div>
                                             <label>Training</label>
                                             <select
-                                                {...register("training")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                                {...register("trainingStatus")}
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
-                                                <option value="true">
-                                                    Yes
-                                                </option>
-                                                <option value="false">
-                                                    No
-                                                </option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
                                             </select>
-                                            {errors.training && (
+                                            {errors.trainingStatus && (
                                                 <span className="text-red-500 block mt-2">
-                                                    {errors.training.message}
+                                                    {
+                                                        errors.trainingStatus
+                                                            .message
+                                                    }
                                                 </span>
                                             )}
                                         </div>
@@ -364,15 +390,11 @@ const EditClient = ({ client }: Iclient) => {
                                             <label>Visa Status</label>
                                             <select
                                                 {...register("visaStatus")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
-                                                <option value="true">
-                                                    Yes
-                                                </option>
-                                                <option value="false">
-                                                    No
-                                                </option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
                                             </select>
                                             {errors.visaStatus && (
                                                 <span className="text-red-500 block mt-2">
@@ -380,26 +402,7 @@ const EditClient = ({ client }: Iclient) => {
                                                 </span>
                                             )}
                                         </div>
-                                        <div>
-                                            <label>Man Power</label>
-                                            <select
-                                                {...register("manPower")}
-                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
-                                            >
-                                                <option value="">Select</option>
-                                                <option value="true">
-                                                    Yes
-                                                </option>
-                                                <option value="false">
-                                                    No
-                                                </option>
-                                            </select>
-                                            {errors.manPower && (
-                                                <span className="text-red-500 block mt-2">
-                                                    {errors.manPower.message}
-                                                </span>
-                                            )}
-                                        </div>
+
                                         <div>
                                             <label>Passport Delivery</label>
                                             <input
@@ -452,7 +455,7 @@ const EditClient = ({ client }: Iclient) => {
                                         type="submit"
                                         className="border border-gray-500 bg-gray-600 text-white cursor-pointer hover:bg-gray-700 rounded-md p-2 mt-4 duration-300"
                                     >
-                                        Update
+                                        Create Client
                                     </button>
                                 </form>
                             </ScrollArea>

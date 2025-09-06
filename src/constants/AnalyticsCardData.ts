@@ -44,7 +44,7 @@ export const analyticsCardData = [
 
 export const clientFields = [
     {
-        referenenceName: "Shakiqur Rahman",
+        referenceName: "Shakiqur Rahman",
         officeName: "Dhaka Office",
         clientName: "Shakil Ahmed",
         dateOfBirth: "24/08/1999",
