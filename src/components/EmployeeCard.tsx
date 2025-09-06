@@ -1,7 +1,9 @@
-import { FaEdit, FaEye, FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
+import EditEmployee from "./EditEmployee";
+import EmployeeDetails from "./EmployeeDetails";
 import { Button } from "./ui/button";
 
-interface IEmployee {
+export interface IEmployee {
     id?: number;
     name?: string;
     position?: string;
@@ -11,6 +13,9 @@ interface IEmployee {
     username?: string;
     role?: string;
     password?: string;
+    address?: string;
+    Office?: string;
+    emergencyContact?: string;
 }
 
 const EmployeeCard = ({ employee }: { employee: IEmployee }) => {
@@ -18,20 +23,8 @@ const EmployeeCard = ({ employee }: { employee: IEmployee }) => {
         <div className="flex justify-center items-center py-2 group overflow-hidden">
             <div className="w-full max-w-md bg-white/10 border border-stone-700 rounded-xl shadow-lg p-6 relative transition hover:shadow-xl">
                 <div className="absolute top-4 right-4 flex-col gap-2 flex transition-all duration-300 translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
-                    <Button
-                        variant="outline"
-                        className="size-8 bg-stone-600 border border-stone-500 text-white hover:text-gray-300 hover:bg-white/30 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
-                        aria-label="View"
-                    >
-                        <FaEye className="size-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        className="size-8 bg-stone-600 border border-stone-500 text-white hover:text-gray-300 hover:bg-white/30 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
-                        aria-label="Edit"
-                    >
-                        <FaEdit className="size-4" />
-                    </Button>
+                    <EmployeeDetails employee={employee} />
+                    <EditEmployee employee={employee} />
                     <Button
                         variant="outline"
                         className="size-8 bg-stone-600 border border-stone-500 text-white hover:text-gray-300 hover:bg-white/30 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
