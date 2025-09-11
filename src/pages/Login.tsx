@@ -29,6 +29,7 @@ const Login = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
     });
@@ -43,6 +44,8 @@ const Login = () => {
             navigate("/");
         } catch (error) {
             setError(getErrorMessage(error));
+        } finally {
+            reset();
         }
     };
 
