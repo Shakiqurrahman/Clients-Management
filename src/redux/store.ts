@@ -12,7 +12,6 @@ import persistReducer from "redux-persist/es/persistReducer";
 import storage from "redux-persist/lib/storage";
 import { baseApi } from "./api/baseApi";
 import authReducer from "./features/auth/authSlice";
-import resetPasswordReducer from "./features/auth/resetPasswordSlice";
 
 const createPersistConfig = (key: string) => ({
     key,
@@ -24,21 +23,10 @@ const persistedAuthReducer = persistReducer(
     authReducer
 );
 
-// const persistedSalesFormReducer = persistReducer(
-//   createPersistConfig("sales"),
-//   salesFormReducer
-// );
-
-// const persistedReceivingFormReducer = persistReducer(
-//   createPersistConfig("receiving"),
-//   recivingFormReduer
-// );
-
 export const store = configureStore({
     reducer: {
         [baseApi.reducerPath]: baseApi.reducer,
         auth: persistedAuthReducer,
-        resetPassword: resetPasswordReducer,
     },
 
     middleware: (getDefaultMiddlewares) =>

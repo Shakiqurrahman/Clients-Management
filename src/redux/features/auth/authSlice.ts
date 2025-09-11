@@ -3,11 +3,9 @@ import type { RootState } from "../../store";
 
 export type TUserData = {
     userId: string;
-    name: string;
-    username: string;
+    fullName: string;
     email: string;
-    role: "ADMIN" | "USER";
-    avatar?: string | null;
+    role: "ADMIN" | "STAFF" | "USER";
 };
 
 const initialState: {

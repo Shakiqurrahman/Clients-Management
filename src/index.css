@@ -18,6 +18,10 @@ body {
     @apply max-w-[1280px] p-4 mx-auto;
 }
 
+button {
+    @apply cursor-pointer;
+}
+
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);

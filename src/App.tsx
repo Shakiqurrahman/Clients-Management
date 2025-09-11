@@ -12,7 +12,7 @@ function App() {
             <PersistGate persistor={persistor}>
                 <Provider store={store}>
                     <RouterProvider router={router} />
-                    <ToastContainer position="top-right" autoClose={3000} />
+                    <ToastContainer position="top-center" autoClose={3000} />
                 </Provider>
             </PersistGate>
         </>

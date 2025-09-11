@@ -2,13 +2,13 @@ import { baseApi } from "../../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        register: builder.mutation({
-            query: (userInfo) => ({
-                url: "/auth/register",
-                method: "POST",
-                body: userInfo,
-            }),
-        }),
+        // register: builder.mutation({
+        //     query: (userInfo) => ({
+        //         url: "/auth/register",
+        //         method: "POST",
+        //         body: userInfo,
+        //     }),
+        // }),
 
         login: builder.mutation({
             query: (userInfo) => ({
@@ -24,26 +24,6 @@ const authApi = baseApi.injectEndpoints({
                 method: "POST",
             }),
         }),
-        forgotPassword: builder.mutation({
-            query: (email) => ({
-                url: `/auth/forgot-password/${email}`,
-                method: "POST",
-            }),
-        }),
-        verifyOtp: builder.mutation({
-            query: ({ email, otp }) => ({
-                url: `/auth/verify-otp/${email}`,
-                method: "POST",
-                body: { otp }, // 👈 OTP in the body
-            }),
-        }),
-        resetPassword: builder.mutation({
-            query: ({ token, newPassword }) => ({
-                url: "/auth/reset-password",
-                method: "POST",
-                body: { token, newPassword },
-            }),
-        }),
         changePassword: builder.mutation({
             query: ({ oldPassword, newPassword }) => ({
                 url: "/auth/change-password",
@@ -56,7 +36,7 @@ const authApi = baseApi.injectEndpoints({
                 url: "/users/me",
                 method: "GET",
             }),
-            providesTags: ["profile"],
+            providesTags: ["user"],
             transformResponse: (response) => response?.data,
         }),
         changeProfile: builder.mutation({
@@ -71,11 +51,8 @@ const authApi = baseApi.injectEndpoints({
 
 export const {
     useLoginMutation,
-    useRegisterMutation,
+    // useRegisterMutation,
     useLogoutMutation,
-    useForgotPasswordMutation,
-    useVerifyOtpMutation,
-    useResetPasswordMutation,
     useChangePasswordMutation,
     useGetProfileInfoQuery,
     useChangeProfileMutation,

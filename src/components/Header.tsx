@@ -3,9 +3,28 @@ import { FaGear } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { Link } from "react-router";
 import logo from "../../public/images/gtt.png";
+import {
+    logoutUser,
+    useCurrentToken,
+    type TUserData,
+} from "../redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { verifyToken } from "../utils/verifyToken";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const Header = () => {
+    const dispatch = useAppDispatch();
+    const token = useAppSelector(useCurrentToken);
+
+    let user: TUserData | null = null;
+    if (token) {
+        user = verifyToken(token) as TUserData;
+    }
+
+    const handleLogout = () => {
+        dispatch(logoutUser());
+    };
+
     return (
         <section className="max-width flex justify-between items-center">
             <Link to={"/"} className="flex gap-2 items-center">
@@ -16,8 +35,8 @@ const Header = () => {
                 <PopoverTrigger>
                     <div className="flex items-center gap-2 cursor-pointer">
                         <div className="*:block text-right text-sm leading-4 hidden sm:block">
-                            <span>Shakiqur Rahman</span>
-                            <span>rahmanshakiqur@gmail.com</span>
+                            <span>{user?.fullName}</span>
+                            <span>{user?.email}</span>
                         </div>
                         <div className="text-lg border p-1 rounded-full cursor-pointer">
                             <CiUser />
@@ -34,16 +53,18 @@ const Header = () => {
                     >
                         <FaGear /> <p>Edit Password</p>
                     </Link>
-                    <Link
-                        to={"/employees"}
-                        className="flex items-center gap-2 cursor-pointer hover:text-gray-200 duration-200 mx-2 hover:mx-4"
-                    >
-                        <IoPersonSharp />
-                        <p>Employees</p>
-                    </Link>
+                    {user?.role === "ADMIN" && (
+                        <Link
+                            to={"/employees"}
+                            className="flex items-center gap-2 cursor-pointer hover:text-gray-200 duration-200 mx-2 hover:mx-4"
+                        >
+                            <IoPersonSharp />
+                            <p>Employees</p>
+                        </Link>
+                    )}
                     <div className="flex items-center gap-2 cursor-pointer hover:text-red-400 duration-200 mx-2 hover:mx-4">
                         <CiLogout />
-                        <p>Logout</p>
+                        <button onClick={handleLogout}>Logout</button>
                     </div>
                 </PopoverContent>
             </Popover>

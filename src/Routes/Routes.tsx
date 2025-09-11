@@ -4,11 +4,18 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import ResetPassword from "../pages/ResetPassword";
 import MainLayout from "./MainLayout";
+import AdminProtected from "./protected/AdminProtected";
+import PrivateRoute from "./protected/PrivateRoute";
+import RequiredAuth from "./protected/RequiredAuth";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout />,
+        element: (
+            <PrivateRoute>
+                <MainLayout />
+            </PrivateRoute>
+        ),
         children: [
             {
                 path: "/",
@@ -16,7 +23,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/employees",
-                element: <Employees />,
+                element: (
+                    <AdminProtected>
+                        <Employees />
+                    </AdminProtected>
+                ),
             },
         ],
     },
@@ -26,7 +37,11 @@ export const router = createBrowserRouter([
     },
     {
         path: "/reset-password",
-        element: <ResetPassword />,
+        element: (
+            <RequiredAuth>
+                <ResetPassword />
+            </RequiredAuth>
+        ),
     },
     // {
     //     path: "/sign-up",
