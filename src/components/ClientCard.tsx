@@ -25,6 +25,7 @@ interface Iclient {
 }
 
 const ClientCard = ({ client }: Iclient) => {
+    const status = true;
     return (
         <div className="flex justify-center items-center py-2 group overflow-hidden">
             <div className="w-full max-w-md bg-white/10 border border-stone-700 rounded-xl shadow-lg p-6 relative transition hover:shadow-xl">
@@ -65,6 +66,20 @@ const ClientCard = ({ client }: Iclient) => {
                         Visa Number:
                     </span>
                     <span className="ml-2">{client.visaNumber || "N/A"}</span>
+                </div>
+                <div>
+                    <span className="font-semibold text-stone-200">
+                        Status:
+                    </span>
+                    {!status ? (
+                        <span className="ml-2 text-xs bg-green-100/20 text-green-500 p-1 rounded-sm">
+                            Completed
+                        </span>
+                    ) : (
+                        <span className="ml-2 text-xs bg-orange-100/20 text-orange-500 p-1 rounded-sm">
+                            Pending
+                        </span>
+                    )}
                 </div>
             </div>
         </div>
