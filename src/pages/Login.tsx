@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Navigate, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -24,6 +25,7 @@ const Login = () => {
     const navigate = useNavigate();
     const [login, { isLoading }] = useLoginMutation();
     const [error, setError] = useState<string | null>(null);
+    const [showPassword, setShowpassword] = useState(false);
 
     const {
         register,
@@ -81,13 +83,25 @@ const Login = () => {
 
                     <div>
                         <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            {...register("password")}
-                            className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/10 dark:bg-white/5 outline-0"
-                            placeholder="Enter your password"
-                        />
+                        <div className="relative">
+                            <input
+                                type={`${showPassword ? "text" : "password"}`}
+                                id="password"
+                                {...register("password")}
+                                className="mt-2 w-full px-3 py-2 rounded-md border border-black/10 dark:border-white/10 bg-white/10 dark:bg-white/5 outline-0"
+                                placeholder="Enter your password"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowpassword(!showPassword)}
+                            >
+                                {showPassword ? (
+                                    <FaRegEyeSlash className="absolute top-[22px] right-[20px] cursor-pointer text-gray-300" />
+                                ) : (
+                                    <FaRegEye className="absolute top-[22px] right-[20px] cursor-pointer text-gray-300" />
+                                )}
+                            </button>
+                        </div>
                         {errors.password && (
                             <p className="text-red-400 text-sm mt-1">
                                 {errors.password.message}

@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 
 export interface IEmployee {
     id?: number;
-    name?: string;
+    fullName?: string;
     position?: string;
     department?: string;
     email?: string;
@@ -38,7 +38,9 @@ const EmployeeCard = ({ employee }: { employee: IEmployee }) => {
                         <span className="font-semibold text-stone-200">
                             Full Name:
                         </span>
-                        <span className="ml-2">{employee.name || "N/A"}</span>
+                        <span className="ml-2">
+                            {employee.fullName || "N/A"}
+                        </span>
                     </div>
                     <div>
                         <span className="font-semibold text-stone-200">
@@ -52,12 +54,7 @@ const EmployeeCard = ({ employee }: { employee: IEmployee }) => {
                     <span className="font-semibold text-stone-200">Email:</span>
                     <span className="ml-2">{employee.email || "N/A"}</span>
                 </div>
-                <div>
-                    <span className="font-semibold text-stone-200">
-                        Password:
-                    </span>
-                    <span className="ml-2">{employee.password || "N/A"}</span>
-                </div>
+
                 <div>
                     <span className="font-semibold text-stone-200">Role:</span>
                     <span className="ml-2">{employee.role || "N/A"}</span>

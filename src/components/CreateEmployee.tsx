@@ -1,7 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaUserPlus } from "react-icons/fa";
+import { toast } from "react-toastify";
 import { z } from "zod";
+import { useCreateEmployeeMutation } from "../redux/features/employee/employeeApi";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -15,18 +18,11 @@ import { ScrollArea } from "./ui/scroll-area";
 
 const CreateEmployee = () => {
     const employeeSchema = z.object({
-        name: z.string().min(1, "Name is required"),
-        userName: z.string().min(1, "Username is required"),
+        fullName: z.string().min(1, "Name is required"),
+        username: z.string().min(1, "Username is required"),
         email: z.string().email("Email must be a valid email address"),
-        phone: z.string().min(1, "Phone is required"),
-        role: z.enum(["Admin", "User"]),
-        status: z.enum(["Active", "Inactive"]),
-        joiningDate: z.string().min(1, "Joining Date is required"),
-        Office: z.string().min(1, "Office is required"),
-        address: z.string().min(1, "Address is required"),
-        emergencyContact: z.string().min(1, "Emergency Contact is required"),
-        // password: z.string().min(6, "Password must be at least 6 characters"),
-        dateOfBirth: z.string().min(1, "Date of Birth is required"),
+        role: z.enum(["ADMIN", "STAFF"]),
+        password: z.string().min(1, "Password is required"),
     });
 
     type EmployeeFormValues = z.infer<typeof employeeSchema>;
@@ -34,17 +30,29 @@ const CreateEmployee = () => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<EmployeeFormValues>({
         resolver: zodResolver(employeeSchema),
     });
 
-    const onSubmit = (data: EmployeeFormValues) => {
-        // handle form submission
-        console.log(data);
+    const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
+    const [showDialog, setShowDialog] = useState(false);
+
+    const onSubmit = async (data: EmployeeFormValues) => {
+        try {
+            await createEmployee(data);
+            toast.success("Employee created successfully");
+            // ✅ optionally reset form or close dialog here
+            setShowDialog(false);
+            reset();
+        } catch (error) {
+            console.error("Failed to create employee:", error);
+        }
     };
+
     return (
-        <Dialog>
+        <Dialog open={showDialog} onOpenChange={setShowDialog}>
             <DialogTrigger asChild>
                 <Button
                     variant="outline"
@@ -68,24 +76,24 @@ const CreateEmployee = () => {
                                     <div>
                                         <label>Full Name</label>
                                         <input
-                                            {...register("name")}
+                                            {...register("fullName")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
-                                        {errors.name && (
+                                        {errors.fullName && (
                                             <span className="text-red-500 block mt-2">
-                                                {errors.name.message}
+                                                {errors.fullName.message}
                                             </span>
                                         )}
                                     </div>
                                     <div>
                                         <label>Username</label>
                                         <input
-                                            {...register("userName")}
+                                            {...register("username")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
-                                        {errors.userName && (
+                                        {errors.username && (
                                             <span className="text-red-500 block mt-2">
-                                                {errors.userName.message}
+                                                {errors.username.message}
                                             </span>
                                         )}
                                     </div>
@@ -102,14 +110,14 @@ const CreateEmployee = () => {
                                         )}
                                     </div>
                                     <div>
-                                        <label>Phone</label>
+                                        <label>Password</label>
                                         <input
-                                            {...register("phone")}
+                                            {...register("password")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
-                                        {errors.phone && (
+                                        {errors.password && (
                                             <span className="text-red-500 block mt-2">
-                                                {errors.phone.message}
+                                                {errors.password.message}
                                             </span>
                                         )}
                                     </div>
@@ -120,97 +128,12 @@ const CreateEmployee = () => {
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-700"
                                         >
                                             <option value="">Select</option>
-                                            <option value="Admin">Admin</option>
-                                            <option value="User">User</option>
+                                            <option value="ADMIN">Admin</option>
+                                            <option value="STAFF">Staff</option>
                                         </select>
                                         {errors.role && (
                                             <span className="text-red-500 block mt-2">
                                                 {errors.role.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label>Status</label>
-                                        <select
-                                            {...register("status")}
-                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-700"
-                                        >
-                                            <option value="">Select</option>
-                                            <option value="Active">
-                                                Active
-                                            </option>
-                                            <option value="Inactive">
-                                                Inactive
-                                            </option>
-                                        </select>
-                                        {errors.status && (
-                                            <span className="text-red-500 block mt-2">
-                                                {errors.status.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label>Joining Date</label>
-                                        <input
-                                            type="date"
-                                            {...register("joiningDate")}
-                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
-                                        />
-                                        {errors.joiningDate && (
-                                            <span className="text-red-500 block mt-2">
-                                                {errors.joiningDate.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label>Office</label>
-                                        <input
-                                            {...register("Office")}
-                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
-                                        />
-                                        {errors.Office && (
-                                            <span className="text-red-500 block mt-2">
-                                                {errors.Office.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label>Address</label>
-                                        <input
-                                            {...register("address")}
-                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
-                                        />
-                                        {errors.address && (
-                                            <span className="text-red-500 block mt-2">
-                                                {errors.address.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label>Emergenty Contact</label>
-                                        <input
-                                            {...register("emergencyContact")}
-                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
-                                        />
-                                        {errors.emergencyContact && (
-                                            <span className="text-red-500 block mt-2">
-                                                {
-                                                    errors.emergencyContact
-                                                        .message
-                                                }
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label>Date Of Birth</label>
-                                        <input
-                                            type="date"
-                                            {...register("dateOfBirth")}
-                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
-                                        />
-                                        {errors.dateOfBirth && (
-                                            <span className="text-red-500 block mt-2">
-                                                {errors.dateOfBirth.message}
                                             </span>
                                         )}
                                     </div>
@@ -220,7 +143,7 @@ const CreateEmployee = () => {
                                     type="submit"
                                     className="border border-gray-500 bg-gray-600 text-white cursor-pointer hover:bg-gray-700 rounded-md p-2 mt-4 duration-300 "
                                 >
-                                    Create Client
+                                    {isLoading ? "Loading..." : "Create Client"}
                                 </button>
                             </form>
                         </ScrollArea>

@@ -16,7 +16,7 @@ import { ScrollArea } from "./ui/scroll-area";
 
 const EditEmployee = ({ employee }: { employee: IEmployee }) => {
     const employeeSchema = z.object({
-        name: z.string().min(1, "Name is required"),
+        fullName: z.string().min(1, "Name is required"),
         userName: z.string().min(1, "Username is required"),
         email: z.string().email("Email must be a valid email address"),
         phone: z.string().min(1, "Phone is required"),
@@ -39,7 +39,7 @@ const EditEmployee = ({ employee }: { employee: IEmployee }) => {
     } = useForm<EmployeeFormValues>({
         resolver: zodResolver(employeeSchema),
         defaultValues: {
-            name: employee.name ?? "",
+            fullName: employee.fullName ?? "",
             userName: employee.username ?? "",
             email: employee.email ?? "",
             phone: employee.phone ?? "",
@@ -74,7 +74,7 @@ const EditEmployee = ({ employee }: { employee: IEmployee }) => {
 
             <DialogContent className="sm:max-w-[800px] bg-gray-900 backdrop-blur-xl text-white border-0">
                 <DialogHeader>
-                    <DialogTitle>Create Employee</DialogTitle>
+                    <DialogTitle>Edit Employee</DialogTitle>
                     <DialogDescription>
                         <ScrollArea className="rounded-sm border h-[60vh] sm:h-[70vh] border-gray-500">
                             <form
@@ -85,12 +85,12 @@ const EditEmployee = ({ employee }: { employee: IEmployee }) => {
                                     <div>
                                         <label>Full Name</label>
                                         <input
-                                            {...register("name")}
+                                            {...register("fullName")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
-                                        {errors.name && (
+                                        {errors.fullName && (
                                             <span className="text-red-500 block mt-2">
-                                                {errors.name.message}
+                                                {errors.fullName.message}
                                             </span>
                                         )}
                                     </div>
