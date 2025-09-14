@@ -10,8 +10,6 @@ const Employees = () => {
     const navigate = useNavigate();
     const { data, isLoading } = useGetEmployeesQuery(undefined);
 
-    console.log(data);
-
     return (
         <div className="max-width">
             <div className="flex justify-between">
@@ -28,6 +26,10 @@ const Employees = () => {
                 {isLoading ? (
                     <h3 className="text-center w-full flex justify-center col-span-4 mt-10 text-2xl text-gray-500">
                         <FaSpinner className="animate-spin duration-300 text-4xl" />
+                    </h3>
+                ) : data.length === 0 ? (
+                    <h3 className="text-center w-full flex justify-center col-span-4 mt-10 text-xl md:text-2xl text-gray-500">
+                        No Employees Found
                     </h3>
                 ) : (
                     data?.map((employee: IEmployee, index: number) => (

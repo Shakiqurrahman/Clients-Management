@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { CgSpinnerTwoAlt } from "react-icons/cg";
 import { FaUserPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -37,6 +38,7 @@ const CreateEmployee = () => {
     });
 
     const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
+
     const [showDialog, setShowDialog] = useState(false);
 
     const onSubmit = async (data: EmployeeFormValues) => {
@@ -143,7 +145,11 @@ const CreateEmployee = () => {
                                     type="submit"
                                     className="border border-gray-500 bg-gray-600 text-white cursor-pointer hover:bg-gray-700 rounded-md p-2 mt-4 duration-300 "
                                 >
-                                    {isLoading ? "Loading..." : "Create Client"}
+                                    {isLoading ? (
+                                        <CgSpinnerTwoAlt className="animate-spin duration-300 text-xl" />
+                                    ) : (
+                                        <span>Create Employee</span>
+                                    )}
                                 </button>
                             </form>
                         </ScrollArea>
