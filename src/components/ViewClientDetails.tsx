@@ -49,7 +49,7 @@ const ViewClientDetails = ({ client }: Iclient) => {
                 <DialogTrigger asChild>
                     <Button
                         variant="outline"
-                        className="size-8 bg-white/20 border border-stone-500 text-white hover:text-gray-300 hover:bg-white/30 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
+                        className="size-8 bg-gray-700/90 border border-stone-500 text-white hover:text-gray-300 hover:bg-gray-600 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
                         aria-label="View"
                     >
                         <FaEye className="size-4" />

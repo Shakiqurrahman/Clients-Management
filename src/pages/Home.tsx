@@ -1,12 +1,14 @@
 import AnalyticsCard from "../components/AnalyticsCard";
 import ClientCard from "../components/ClientCard";
 import SearchBar from "../components/SearchBar";
-import {
-    analyticsCardData,
-    clientFields,
-} from "../constants/AnalyticsCardData";
+import { analyticsCardData } from "../constants/AnalyticsCardData";
+import ClientCardSkeleton from "../lib/ClientCardSkeleton";
+import { useGetClientsQuery } from "../redux/features/client/clientApi";
 
 const Home = () => {
+    const { data: response, isLoading } = useGetClientsQuery(null);
+    const { data: clients, meta } = response || {};
+
     return (
         <section className="max-width">
             <h1 className="text-xl font-semibold">Analytics</h1>
@@ -20,9 +22,17 @@ const Home = () => {
             </div>
 
             <div className="mt-6  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4">
-                {clientFields.map((client, index) => (
-                    <ClientCard key={index} client={client} />
-                ))}
+                {isLoading ? (
+                    Array.from({ length: 12 }).map((_, index) => (
+                        <ClientCardSkeleton key={index} />
+                    ))
+                ) : clients?.length === 0 ? (
+                    <p>No client data found!</p>
+                ) : (
+                    clients?.map((client, index: number) => (
+                        <ClientCard key={index} client={client} />
+                    ))
+                )}
             </div>
         </section>
     );

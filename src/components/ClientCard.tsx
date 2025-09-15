@@ -1,5 +1,6 @@
 import { FaRegTrashAlt } from "react-icons/fa";
 
+import { GoDotFill } from "react-icons/go";
 import EditClient from "./EditClientDetails";
 import { Button } from "./ui/button";
 import ViewClientDetails from "./ViewClientDetails";
@@ -21,26 +22,26 @@ interface Iclient {
         mofaDate?: string;
         visaFingerDate?: string;
         manPowerFingerDate?: string;
+        status?: "ACTIVE" | "PENDING" | "CANCELLED" | "COMPLETED";
     };
 }
 
 const ClientCard = ({ client }: Iclient) => {
-    const status = true;
     return (
-        <div className="flex justify-center items-center py-2 group overflow-hidden">
+        <div className="flex justify-center items-center py-2 group overflow-hidden relative">
             <div className="w-full max-w-md bg-white/10 border border-stone-700 rounded-xl shadow-lg p-6 relative transition hover:shadow-xl">
-                <div className="absolute top-4 right-4 flex-col gap-2 flex transition-all duration-300 translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
+                <div className="absolute top-4 right-4 flex-col gap-2 flex transition-all duration-300 translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 z-20">
                     <ViewClientDetails client={client} />
                     <EditClient client={client} />
                     <Button
                         variant="outline"
-                        className="size-8 bg-white/20 border border-stone-500 text-white hover:text-gray-300 hover:bg-white/30 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
+                        className="size-8 bg-gray-700/90 border border-stone-500 text-white hover:text-gray-300 hover:bg-gray-600 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
                         aria-label="Delete"
                     >
                         <FaRegTrashAlt className="size-4" />
                     </Button>
                 </div>
-                <div className="space-y-1 mt-2 text-gray-100">
+                <div className="space-y-1 mt-3 text-gray-100">
                     <div>
                         <span className="font-semibold text-stone-200">
                             Name:
@@ -67,18 +68,32 @@ const ClientCard = ({ client }: Iclient) => {
                     </span>
                     <span className="ml-2">{client.visaNumber || "N/A"}</span>
                 </div>
-                <div>
-                    <span className="font-semibold text-stone-200">
-                        Status:
-                    </span>
-                    {!status ? (
-                        <span className="ml-2 text-xs bg-green-100/20 text-green-500 p-1 rounded-sm">
-                            Completed
-                        </span>
+                <div className="absolute top-3 right-3">
+                    {client?.status === "CANCELLED" ? (
+                        <div className="border border-rose-600 text-rose-600 flex items-center bg-[#ffe0e0] px-1.5 py-[1px] rounded-[10px] text-[12px]">
+                            <GoDotFill className="text-xs" />
+                            <span>{client?.status}</span>
+                        </div>
+                    ) : client?.status === "PENDING" ? (
+                        <div className="border border-blue-500 text-blue-500 flex items-center bg-[#edfff4] px-1.5 py-[1px] rounded-[10px] text-[12px]">
+                            <GoDotFill className="text-xs" />
+                            <span>{client?.status}</span>
+                        </div>
+                    ) : client?.status === "ACTIVE" ? (
+                        <div className="border border-yellow-500 text-yellow-500 flex items-center bg-[#edfff4] px-1.5 py-[1px] rounded-[10px] text-[12px]">
+                            <GoDotFill className="text-xs" />
+                            <span>{client?.status}</span>
+                        </div>
+                    ) : client?.status === "COMPLETED" ? (
+                        <div className="border border-[#09cc57] text-[#09cc57] flex items-center bg-[#edfff4] px-1.5 py-[1px] rounded-[10px] text-[12px]">
+                            <GoDotFill className="text-xs" />
+                            <span>{client?.status}</span>
+                        </div>
                     ) : (
-                        <span className="ml-2 text-xs bg-orange-100/20 text-orange-500 p-1 rounded-sm">
-                            Pending
-                        </span>
+                        <div className="border border-[#000000] text-[#032611] flex items-center bg-[#edfff4] px-1.5 py-[1px] rounded-[10px] text-[12px]">
+                            <GoDotFill className="text-xs" />
+                            <span>{client?.status}</span>
+                        </div>
                     )}
                 </div>
             </div>
