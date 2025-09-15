@@ -9,12 +9,12 @@ import { router } from "./Routes/Routes";
 function App() {
     return (
         <>
-            <PersistGate persistor={persistor}>
-                <Provider store={store}>
+            <Provider store={store}>
+                <PersistGate persistor={persistor}>
                     <RouterProvider router={router} />
-                    <ToastContainer position="top-center" autoClose={3000} />
-                </Provider>
-            </PersistGate>
+                    <ToastContainer position="top-center" autoClose={2500} />
+                </PersistGate>
+            </Provider>
         </>
     );
 }
