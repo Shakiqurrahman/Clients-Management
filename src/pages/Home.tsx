@@ -8,6 +8,7 @@ import { useGetClientsQuery } from "../redux/features/client/clientApi";
 const Home = () => {
     const { data: response, isLoading } = useGetClientsQuery(null);
     const { data: clients, meta } = response || {};
+    console.log(meta);
 
     return (
         <section className="max-width">
