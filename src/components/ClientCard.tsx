@@ -1,32 +1,33 @@
 import { FaRegTrashAlt } from "react-icons/fa";
 
 import { GoDotFill } from "react-icons/go";
+import type { IClient } from "../types/clients";
 import EditClient from "./EditClientDetails";
 import { Button } from "./ui/button";
 import ViewClientDetails from "./ViewClientDetails";
 
-interface Iclient {
-    client: {
-        referenenceName?: string;
-        officeName?: string;
-        clientName?: string;
-        dateOfBirth?: string;
-        passportNumber?: string;
-        visaNumber?: string;
-        idNumber?: string;
-        koffileNumber?: string;
-        medicalDate?: string;
-        medicalFit?: boolean;
-        clientNumber?: string;
-        policeClearence?: boolean;
-        mofaDate?: string;
-        visaFingerDate?: string;
-        manPowerFingerDate?: string;
-        status?: "ACTIVE" | "PENDING" | "CANCELLED" | "COMPLETED";
-    };
-}
+// interface Iclient {
+//     client: {
+//         referenenceName?: string;
+//         officeName?: string;
+//         clientName?: string;
+//         dateOfBirth?: string;
+//         passportNumber?: string;
+//         visaNumber?: string;
+//         idNumber?: string;
+//         koffileNumber?: string;
+//         medicalDate?: string;
+//         medicalFit?: boolean;
+//         clientNumber?: string;
+//         policeClearence?: boolean;
+//         mofaDate?: string;
+//         visaFingerDate?: string;
+//         manPowerFingerDate?: string;
+//         status?: "ACTIVE" | "PENDING" | "CANCELLED" | "COMPLETED";
+//     };
+// }
 
-const ClientCard = ({ client }: Iclient) => {
+const ClientCard = ({ client }: IClient) => {
     return (
         <div className="flex justify-center items-center py-2 group overflow-hidden relative">
             <div className="w-full max-w-md bg-white/10 border border-stone-700 rounded-xl shadow-lg p-6 relative transition hover:shadow-xl">

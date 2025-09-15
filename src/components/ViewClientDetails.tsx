@@ -1,5 +1,7 @@
 import { FaEye } from "react-icons/fa6";
 
+import type { IClient } from "../types/clients";
+import { formatDateToLongDate } from "../utils/timeFormatHandler";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -24,7 +26,7 @@ export interface Iclient {
         medicalDate?: string;
         medicalFit?: boolean;
         clientNumber?: string;
-        policeClearence?: boolean;
+        policeClearance?: boolean;
         training?: boolean;
         manPowerFingerDate?: string;
         mofaDate?: string;
@@ -42,7 +44,9 @@ export interface Iclient {
     };
 }
 
-const ViewClientDetails = ({ client }: Iclient) => {
+const ViewClientDetails = ({ client }: IClient) => {
+    console.log("client object 🚀", client);
+    console.log(typeof client);
     return (
         <Dialog>
             <form>
@@ -73,26 +77,273 @@ const ViewClientDetails = ({ client }: Iclient) => {
                                         </tr>
                                     </thead>
                                     <tbody className="text-gray-200">
-                                        {Object.entries(client).map(
-                                            ([key, value]) => (
-                                                <tr key={key}>
-                                                    <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
-                                                        {key.replace(
-                                                            /([A-Z])/g,
-                                                            " $1"
-                                                        )}
-                                                    </td>
-                                                    <td className="border-b border-stone-700 px-2 py-1">
-                                                        {typeof value ===
-                                                        "boolean"
-                                                            ? value
-                                                                ? "Yes"
-                                                                : "No"
-                                                            : value || "N/A"}
-                                                    </td>
-                                                </tr>
-                                            )
-                                        )}
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Client Name
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.clientName || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Reference Name
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.referenceName || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Office Name
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.officeName || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Date of Birth
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {formatDateToLongDate(
+                                                    client.dateOfBirth
+                                                ) || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Passport Number
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.passportNumber ||
+                                                    "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Police Clearance
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.policeClearance
+                                                    ? "Yes"
+                                                    : "No"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Visa Number
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.visaNumber || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Id Number
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.idNumber || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Koffile Number
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.koffileNumber || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Medical Date
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {formatDateToLongDate(
+                                                    client?.medicalDate
+                                                ) || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Medical Expire Date
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {formatDateToLongDate(
+                                                    client?.medicalExpireDate
+                                                ) || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Medical Status
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.medicalStatus
+                                                    ? "Fit"
+                                                    : "Unfit"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Client Number
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.clientNumber || "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Mofa Status
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.MofaStatus
+                                                    ? "Yes"
+                                                    : "No"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Mofa Date
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.mofaDate
+                                                    ? formatDateToLongDate(
+                                                          client.mofaDate
+                                                      )
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Visa Finger Date
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.visaFingerDate
+                                                    ? formatDateToLongDate(
+                                                          client.visaFingerDate
+                                                      )
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Man Power Finger Date
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.manPowerFingerDate
+                                                    ? formatDateToLongDate(
+                                                          client.manPowerFingerDate
+                                                      )
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Training Status
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.trainingStatus
+                                                    ? "Completed"
+                                                    : "Pending"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Couriar Date
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.courierDate
+                                                    ? formatDateToLongDate(
+                                                          client.courierDate
+                                                      )
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Takammol Certificate
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.TakammolCertificate
+                                                    ? "Yes"
+                                                    : "No"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                visa Status
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.visaStatus
+                                                    ? "Yes"
+                                                    : "No"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Man Power Status
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.manPowerStatus
+                                                    ? "Yes"
+                                                    : "No"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Passport Delivery
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.passportDelivery
+                                                    ? formatDateToLongDate(
+                                                          client.passportDelivery
+                                                      )
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Ticket Date
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.ticketDate
+                                                    ? formatDateToLongDate(
+                                                          client.ticketDate
+                                                      )
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Scan Copy
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.scanCopy
+                                                    ? client.scanCopy
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Notes
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.notes
+                                                    ? client.notes
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                status
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.status
+                                                    ? client.status
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </ScrollArea>

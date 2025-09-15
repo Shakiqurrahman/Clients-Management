@@ -2,6 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FaEdit } from "react-icons/fa";
 import { z } from "zod";
+import type { IClient } from "../types/clients";
+import { formatDateForInput } from "../utils/timeFormatHandler";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -12,9 +14,9 @@ import {
     DialogTrigger,
 } from "./ui/dialog";
 import { ScrollArea } from "./ui/scroll-area";
-import type { Iclient } from "./ViewClientDetails";
 
-const EditClient = ({ client }: Iclient) => {
+const EditClient = ({ client }: IClient) => {
+    console.log("client in edit form", client.dateOfBirth);
     const clientSchema = z.object({
         referenceName: z.string().min(1, "Reference Name is required"),
         officeName: z.string().min(1, "Office Name is required"),
@@ -23,25 +25,24 @@ const EditClient = ({ client }: Iclient) => {
         passportNumber: z.string().min(1, "Passport Number is required"),
         visaNumber: z.string().min(1, "Visa Number is required"),
         idNumber: z.string().min(1, "ID Number is required"),
-        koffileNumber: z.string().min(1, "Koffile Number is required"),
+        kofeelNumber: z.string().min(1, "Koffile Number is required"),
         medicalDate: z.string().min(1, "Medical Date is required"),
         medicalExpireDate: z.string().min(1, "Medical Date is required"),
-        medicalStatus: z.string().min(1, "Medical Date is required"),
-        medicalFit: z.enum(["Yes", "No"]),
+        medicalStatus: z.enum(["Fit", "Unfit", "No"]),
         clientNumber: z.string().min(1, "Client Number is required"),
-        policeClearence: z.enum(["Yes", "No"]),
+        policeClearance: z.enum(["Yes", "No"]),
         mofaDate: z.string().min(1, "MOFA Date is required"),
         visaFingerDate: z.string().min(1, "Visa Finger Date is required"),
         manPowerFingerDate: z
             .string()
             .min(1, "Man power finger date is required"),
         trainingStatus: z.enum(["Yes", "No"]),
-        takammolCertificate: z.enum(["Yes", "No"]),
-        curierDate: z.string().min(1, "Curier Date is required"),
+        TakammolCertificate: z.enum(["Yes", "No"]),
+        courierDate: z.string().min(1, "Curier Date is required"),
         visaStatus: z.enum(["Yes", "No"]),
         passportDelivery: z.string().min(1, "Passport Delivery is required"),
         ticketDate: z.string().min(1, "Ticket Date is required"),
-        scanCopyLink: z.string().url("Scan Copy Link must be a valid URL"),
+        scanCopy: z.string().url("Scan Copy Link must be a valid URL"),
     });
 
     type ClientFormValues = z.infer<typeof clientSchema>;
@@ -56,57 +57,53 @@ const EditClient = ({ client }: Iclient) => {
             referenceName: client.referenceName || "",
             officeName: client.officeName || "",
             clientName: client.clientName || "",
-            dateOfBirth: client.dateOfBirth || "",
+            dateOfBirth: formatDateForInput(client.dateOfBirth) || "",
             passportNumber: client.passportNumber || "",
             visaNumber: client.visaNumber || "",
             idNumber: client.idNumber || "",
-            koffileNumber: client.koffileNumber || "",
-            medicalDate: client.medicalDate || "",
-            medicalExpireDate: client.medicalExpireDate || "",
+            kofeelNumber: client.kofeelNumber || "",
+            medicalDate: formatDateForInput(client.medicalDate) || "",
+            medicalExpireDate:
+                formatDateForInput(client.medicalExpireDate) || "",
             medicalStatus:
                 typeof client.medicalStatus === "boolean"
                     ? client.medicalStatus
-                        ? "Yes"
-                        : "No"
+                        ? "Fit"
+                        : "Unfit"
                     : client.medicalStatus || "No",
-            medicalFit:
-                typeof client.medicalFit === "boolean"
-                    ? client.medicalFit
-                        ? "Yes"
-                        : "No"
-                    : client.medicalFit || "No",
             clientNumber: client.clientNumber || "",
-            policeClearence:
-                typeof client.policeClearence === "boolean"
-                    ? client.policeClearence
+            policeClearance:
+                typeof client.policeClearance === "boolean"
+                    ? client.policeClearance
                         ? "Yes"
                         : "No"
-                    : client.policeClearence || "No",
-            mofaDate: client.mofaDate || "",
-            visaFingerDate: client.visaFingerDate || "",
-            manPowerFingerDate: client.manPowerFingerDate || "",
+                    : client.policeClearance || "No",
+            mofaDate: formatDateForInput(client.mofaDate) || "",
+            visaFingerDate: formatDateForInput(client.visaFingerDate) || "",
+            manPowerFingerDate:
+                formatDateForInput(client.manPowerFingerDate) || "",
             trainingStatus:
                 typeof client.trainingStatus === "boolean"
                     ? client.trainingStatus
                         ? "Yes"
                         : "No"
                     : client.trainingStatus || "No",
-            takammolCertificate:
-                typeof client.takammolCertificate === "boolean"
-                    ? client.takammolCertificate
+            TakammolCertificate:
+                typeof client.TakammolCertificate === "boolean"
+                    ? client.TakammolCertificate
                         ? "Yes"
                         : "No"
-                    : client.takammolCertificate || "No",
-            curierDate: client.curierDate || "",
+                    : client.TakammolCertificate || "No",
+            courierDate: formatDateForInput(client.courierDate) || "",
             visaStatus:
                 typeof client.visaStatus === "boolean"
                     ? client.visaStatus
                         ? "Yes"
                         : "No"
                     : client.visaStatus || "No",
-            passportDelivery: client.passportDelivery || "",
-            ticketDate: client.ticketDate || "",
-            scanCopyLink: client.scanCopyLink || "",
+            passportDelivery: formatDateForInput(client.passportDelivery) || "",
+            ticketDate: formatDateForInput(client.ticketDate) || "",
+            scanCopy: client.scanCopy || "",
         },
     });
 
@@ -231,13 +228,13 @@ const EditClient = ({ client }: Iclient) => {
                                         <div>
                                             <label>Koffile Number</label>
                                             <input
-                                                {...register("koffileNumber")}
+                                                {...register("kofeelNumber")}
                                                 className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                             />
-                                            {errors.koffileNumber && (
+                                            {errors.kofeelNumber && (
                                                 <span className="text-red-500 block mt-2">
                                                     {
-                                                        errors.koffileNumber
+                                                        errors.kofeelNumber
                                                             .message
                                                     }
                                                 </span>
@@ -259,16 +256,21 @@ const EditClient = ({ client }: Iclient) => {
                                         <div>
                                             <label>Medical Fit</label>
                                             <select
-                                                {...register("medicalFit")}
+                                                {...register("medicalStatus")}
                                                 className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
+                                                <option value="Fit">Fit</option>
+                                                <option value="Unfit">
+                                                    Unfit
+                                                </option>
                                             </select>
-                                            {errors.medicalFit && (
+                                            {errors.medicalStatus && (
                                                 <span className="text-red-500 block mt-2">
-                                                    {errors.medicalFit.message}
+                                                    {
+                                                        errors.medicalStatus
+                                                            .message
+                                                    }
                                                 </span>
                                             )}
                                         </div>
@@ -290,17 +292,17 @@ const EditClient = ({ client }: Iclient) => {
                                         <div>
                                             <label>Police Clearence</label>
                                             <select
-                                                {...register("policeClearence")}
+                                                {...register("policeClearance")}
                                                 className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
                                                 <option value="Yes">Yes</option>
                                                 <option value="No">No</option>
                                             </select>
-                                            {errors.policeClearence && (
+                                            {errors.policeClearance && (
                                                 <span className="text-red-500 block mt-2">
                                                     {
-                                                        errors.policeClearence
+                                                        errors.policeClearance
                                                             .message
                                                     }
                                                 </span>
@@ -377,12 +379,12 @@ const EditClient = ({ client }: Iclient) => {
                                             <label>Curier Date</label>
                                             <input
                                                 type="date"
-                                                {...register("curierDate")}
+                                                {...register("courierDate")}
                                                 className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                             />
-                                            {errors.curierDate && (
+                                            {errors.courierDate && (
                                                 <span className="text-red-500 block mt-2">
-                                                    {errors.curierDate.message}
+                                                    {errors.courierDate.message}
                                                 </span>
                                             )}
                                         </div>
@@ -437,15 +439,12 @@ const EditClient = ({ client }: Iclient) => {
                                         <div>
                                             <label>Scan Copy Link</label>
                                             <input
-                                                {...register("scanCopyLink")}
+                                                {...register("scanCopy")}
                                                 className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                             />
-                                            {errors.scanCopyLink && (
+                                            {errors.scanCopy && (
                                                 <span className="text-red-500 block mt-2">
-                                                    {
-                                                        errors.scanCopyLink
-                                                            .message
-                                                    }
+                                                    {errors.scanCopy.message}
                                                 </span>
                                             )}
                                         </div>
@@ -455,7 +454,7 @@ const EditClient = ({ client }: Iclient) => {
                                         type="submit"
                                         className="border border-gray-500 bg-gray-600 text-white cursor-pointer hover:bg-gray-700 rounded-md p-2 mt-4 duration-300"
                                     >
-                                        Create Client
+                                        Update
                                     </button>
                                 </form>
                             </ScrollArea>
