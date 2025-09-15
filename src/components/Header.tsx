@@ -67,10 +67,13 @@ const Header = () => {
                             <p>Employees</p>
                         </Link>
                     )}
-                    <div className="flex items-center gap-2 cursor-pointer hover:text-red-400 duration-200 mx-2 hover:mx-4">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 cursor-pointer hover:text-red-400 duration-200 mx-2 hover:mx-4 w-full"
+                    >
                         <CiLogout />
-                        <button onClick={handleLogout}>Logout</button>
-                    </div>
+                        <span>Logout</span>
+                    </button>
                 </PopoverContent>
             </Popover>
         </section>
