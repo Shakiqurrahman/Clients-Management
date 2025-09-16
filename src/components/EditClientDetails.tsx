@@ -1,7 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
 import { z } from "zod";
+import { useUpdateClientMutation } from "../redux/features/client/clientApi";
 import type { IClient } from "../types/clients";
 import { formatDateForInput } from "../utils/timeFormatHandler";
 import { Button } from "./ui/button";
@@ -24,6 +27,10 @@ const EditClient = ({
     client: IClient;
     userRole?: TUserRole;
 }) => {
+    const [open, setOpen] = useState(false);
+
+    const [updateClient, { isLoading }] = useUpdateClientMutation();
+
     const clientSchema = z.object({
         referenceName: z.string().min(1, "Reference Name is required"),
         officeName: z.string().min(1, "Office Name is required"),
@@ -35,11 +42,13 @@ const EditClient = ({
         kofeelNumber: z.string().min(1, "Koffile Number is required"),
         medicalDate: z.string().min(1, "Medical Date is required"),
         medicalExpireDate: z.string().min(1, "Medical Date is required"),
-        medicalStatus: z.enum(["Fit", "Unfit", "No"]),
+        medicalStatus: z.enum(["Yes", "No"]),
         clientNumber: z.string().min(1, "Client Number is required"),
         policeClearance: z.enum(["Yes", "No"]),
+        MofaStatus: z.enum(["Yes", "No"]),
         mofaDate: z.string().min(1, "MOFA Date is required"),
         visaFingerDate: z.string().min(1, "Visa Finger Date is required"),
+        manPowerStatus: z.enum(["Yes", "No"]),
         manPowerFingerDate: z
             .string()
             .min(1, "Man power finger date is required"),
@@ -49,7 +58,9 @@ const EditClient = ({
         visaStatus: z.enum(["Yes", "No"]),
         passportDelivery: z.string().min(1, "Passport Delivery is required"),
         ticketDate: z.string().min(1, "Ticket Date is required"),
+        notes: z.string().optional(),
         scanCopy: z.string().url("Scan Copy Link must be a valid URL"),
+        status: z.enum(["ACTIVE", "PENDING", "CANCELLED", "COMPLETED"]),
     });
 
     type ClientFormValues = z.infer<typeof clientSchema>;
@@ -58,6 +69,7 @@ const EditClient = ({
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<ClientFormValues>({
         resolver: zodResolver(clientSchema),
         defaultValues: {
@@ -75,8 +87,8 @@ const EditClient = ({
             medicalStatus:
                 typeof client.medicalStatus === "boolean"
                     ? client.medicalStatus
-                        ? "Fit"
-                        : "Unfit"
+                        ? "Yes"
+                        : "No"
                     : client.medicalStatus || "No",
             clientNumber: client.clientNumber || "",
             policeClearance:
@@ -85,8 +97,20 @@ const EditClient = ({
                         ? "Yes"
                         : "No"
                     : client.policeClearance || "No",
+            MofaStatus:
+                typeof client.MofaStatus === "boolean"
+                    ? client.MofaStatus
+                        ? "Yes"
+                        : "No"
+                    : client.MofaStatus || "No",
             mofaDate: formatDateForInput(client.mofaDate) || "",
             visaFingerDate: formatDateForInput(client.visaFingerDate) || "",
+            manPowerStatus:
+                typeof client.manPowerStatus === "boolean"
+                    ? client.manPowerStatus
+                        ? "Yes"
+                        : "No"
+                    : client.manPowerStatus || "No",
             manPowerFingerDate:
                 formatDateForInput(client.manPowerFingerDate) || "",
             trainingStatus:
@@ -110,16 +134,36 @@ const EditClient = ({
                     : client.visaStatus || "No",
             passportDelivery: formatDateForInput(client.passportDelivery) || "",
             ticketDate: formatDateForInput(client.ticketDate) || "",
+            notes: client.notes || "",
             scanCopy: client.scanCopy || "",
+            status: client?.status,
         },
     });
 
-    const onSubmit = (data: ClientFormValues) => {
-        // handle form submission
-        console.log(data);
+    const onSubmit = async (data: ClientFormValues) => {
+        const transformedData = {
+            ...data,
+            medicalStatus: data.medicalStatus === "Yes",
+            policeClearance: data.policeClearance === "Yes",
+            trainingStatus: data.trainingStatus === "Yes",
+            visaStatus: data.visaStatus === "Yes",
+            TakammolCertificate: data.TakammolCertificate === "Yes",
+            MofaStatus: data.MofaStatus === "Yes",
+            manPowerStatus: data.manPowerStatus === "Yes",
+            id: client.id,
+        };
+        try {
+            await updateClient(transformedData).unwrap();
+            toast.success("Client updated successfully!");
+        } catch {
+            toast.error("Failed to update this client");
+        } finally {
+            setOpen(false);
+            reset();
+        }
     };
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <form>
                 <DialogTrigger asChild>
                     <Button
@@ -262,16 +306,32 @@ const EditClient = ({
                                             )}
                                         </div>
                                         <div>
+                                            <label>Medical Expiry Date</label>
+                                            <input
+                                                type="date"
+                                                {...register(
+                                                    "medicalExpireDate"
+                                                )}
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                            />
+                                            {errors.medicalExpireDate && (
+                                                <span className="text-red-500 block mt-2">
+                                                    {
+                                                        errors.medicalExpireDate
+                                                            .message
+                                                    }
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div>
                                             <label>Medical Fit</label>
                                             <select
                                                 {...register("medicalStatus")}
                                                 className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
                                             >
                                                 <option value="">Select</option>
-                                                <option value="Fit">Fit</option>
-                                                <option value="Unfit">
-                                                    Unfit
-                                                </option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
                                             </select>
                                             {errors.medicalStatus && (
                                                 <span className="text-red-500 block mt-2">
@@ -317,6 +377,22 @@ const EditClient = ({
                                             )}
                                         </div>
                                         <div>
+                                            <label>Mofa Status</label>
+                                            <select
+                                                {...register("MofaStatus")}
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                            >
+                                                <option value="">Select</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                            {errors.MofaStatus && (
+                                                <span className="text-red-500 block mt-2">
+                                                    {errors.MofaStatus.message}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div>
                                             <label>MOFA Date</label>
                                             <input
                                                 type="date"
@@ -345,6 +421,27 @@ const EditClient = ({
                                                 </span>
                                             )}
                                         </div>
+
+                                        <div>
+                                            <label>Man Power Status</label>
+                                            <select
+                                                {...register("manPowerStatus")}
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                            >
+                                                <option value="">Select</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                            {errors.manPowerStatus && (
+                                                <span className="text-red-500 block mt-2">
+                                                    {
+                                                        errors.manPowerStatus
+                                                            .message
+                                                    }
+                                                </span>
+                                            )}
+                                        </div>
+
                                         <div>
                                             <label>Man Power Finger</label>
                                             <input
@@ -383,6 +480,30 @@ const EditClient = ({
                                                 </span>
                                             )}
                                         </div>
+
+                                        <div>
+                                            <label>Takammol Certificate</label>
+                                            <select
+                                                {...register(
+                                                    "TakammolCertificate"
+                                                )}
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                            >
+                                                <option value="">Select</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                            {errors.TakammolCertificate && (
+                                                <span className="text-red-500 block mt-2">
+                                                    {
+                                                        errors
+                                                            .TakammolCertificate
+                                                            .message
+                                                    }
+                                                </span>
+                                            )}
+                                        </div>
+
                                         <div>
                                             <label>Curier Date</label>
                                             <input
@@ -444,6 +565,16 @@ const EditClient = ({
                                                 </span>
                                             )}
                                         </div>
+
+                                        <div className="col-span-full">
+                                            <label>Notes</label>
+                                            <textarea
+                                                rows={5}
+                                                {...register("notes")}
+                                                className="whitespace-pre-wrap border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                            />
+                                        </div>
+
                                         <div>
                                             <label>Scan Copy Link</label>
                                             <input
@@ -456,13 +587,42 @@ const EditClient = ({
                                                 </span>
                                             )}
                                         </div>
+
+                                        <div>
+                                            <label>Status</label>
+                                            <select
+                                                {...register("status")}
+                                                className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                            >
+                                                <option value="ACTIVE">
+                                                    Active
+                                                </option>
+                                                <option value="PENDING">
+                                                    Pending
+                                                </option>
+                                                <option value="CANCELLED">
+                                                    Cancelled
+                                                </option>
+                                                <option value="COMPLETED">
+                                                    Completed
+                                                </option>
+                                            </select>
+                                            {errors.status && (
+                                                <span className="text-red-500 block mt-2">
+                                                    {errors.status.message}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
 
                                     <button
                                         type="submit"
+                                        disabled={isLoading}
                                         className="border border-gray-500 bg-gray-600 text-white cursor-pointer hover:bg-gray-700 rounded-md p-2 mt-4 duration-300"
                                     >
-                                        Update
+                                        {isLoading
+                                            ? "Updating..."
+                                            : "Update Client"}
                                     </button>
                                 </form>
                             </ScrollArea>

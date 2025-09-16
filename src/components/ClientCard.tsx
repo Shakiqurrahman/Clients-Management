@@ -1,10 +1,12 @@
 import { FaRegTrashAlt } from "react-icons/fa";
 
+import toast from "react-hot-toast";
 import { GoDotFill } from "react-icons/go";
 import {
     useCurrentToken,
     type TUserData,
 } from "../redux/features/auth/authSlice";
+import { useDeleteClientMutation } from "../redux/features/client/clientApi";
 import { useAppSelector } from "../redux/hooks";
 import type { IClient } from "../types/clients";
 import { verifyToken } from "../utils/verifyToken";
@@ -13,12 +15,23 @@ import { Button } from "./ui/button";
 import ViewClientDetails from "./ViewClientDetails";
 
 const ClientCard = ({ client }: { client: IClient }) => {
+    const [deleteClient, { isLoading }] = useDeleteClientMutation();
     const token = useAppSelector(useCurrentToken);
 
     let user: TUserData | null = null;
     if (token) {
         user = verifyToken(token) as TUserData;
     }
+
+    const handleDeleteClient = async () => {
+        const loadingToast = toast.loading("Deleting client...");
+        try {
+            await deleteClient(client.id).unwrap();
+            toast.success("Client deleted successfully", { id: loadingToast });
+        } catch {
+            toast.error("Failed to delete client", { id: loadingToast });
+        }
+    };
     return (
         <div className="flex justify-center items-center py-2 group overflow-hidden relative">
             <div className="w-full max-w-md bg-white/10 border border-stone-700 rounded-xl shadow-lg p-6 relative transition hover:shadow-xl">
@@ -28,10 +41,13 @@ const ClientCard = ({ client }: { client: IClient }) => {
                     <EditClient client={client} userRole={user?.role} />
 
                     <Button
+                        onClick={handleDeleteClient}
                         variant="outline"
                         className="size-8 bg-gray-700/90 border border-stone-500 text-white hover:text-gray-300 hover:bg-gray-600 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
                         disabled={
-                            user?.role !== "ADMIN" && user?.role !== "STAFF"
+                            (user?.role !== "ADMIN" &&
+                                user?.role !== "STAFF") ||
+                            isLoading
                         }
                         aria-label="Delete"
                     >

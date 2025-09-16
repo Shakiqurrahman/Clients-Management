@@ -31,20 +31,26 @@ const CreateClient = () => {
         idNumber: z.string().min(1, "ID Number is required"),
         kofeelNumber: z.string().min(1, "Kofeel Number is required"),
         medicalDate: z.string().optional(),
-        medicalExpireDate: z.string().optional(),
+        medicalExpireDate: z.string(),
         medicalStatus: z.enum(["Yes", "No"]),
         clientNumber: z.string().min(1, "Client Number is required"),
         policeClearance: z.enum(["Yes", "No"]),
+        MofaStatus: z.enum(["Yes", "No"]),
         mofaDate: z.string().optional(),
         visaFingerDate: z.string().optional(),
+        manPowerStatus: z.enum(["Yes", "No"]),
         manPowerFingerDate: z.string().optional(),
         trainingStatus: z.enum(["Yes", "No"]),
         TakammolCertificate: z.enum(["Yes", "No"]),
         courierDate: z.string().min(1, "Courier Date is required"),
         visaStatus: z.enum(["Yes", "No"]),
-        passportDelivery: z.string().optional(),
+        passportDelivery: z
+            .string()
+            .min(1, "Passport Delivery Date is required"),
         ticketDate: z.string().min(1, "Ticket Date is required"),
+        notes: z.string().optional(),
         scanCopy: z.string().url("Scan Copy Link must be a valid URL"),
+        status: z.enum(["ACTIVE", "PENDING", "CANCELLED", "COMPLETED"]),
     });
 
     type ClientFormValues = z.infer<typeof clientSchema>;
@@ -66,6 +72,8 @@ const CreateClient = () => {
             trainingStatus: data.trainingStatus === "Yes",
             visaStatus: data.visaStatus === "Yes",
             TakammolCertificate: data.TakammolCertificate === "Yes",
+            MofaStatus: data.MofaStatus === "Yes",
+            manPowerStatus: data.manPowerStatus === "Yes",
         };
         try {
             await createClient(transformedData).unwrap();
@@ -79,10 +87,9 @@ const CreateClient = () => {
     };
 
     return (
-        <Dialog open={open}>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    onClick={() => setOpen(true)}
                     variant="outline"
                     className="bg-white/5 border border-stone-500 text-white hover:text-gray-300 hover:bg-white/10 transition duration-300 cursor-pointer flex gap-2 items-center"
                 >
@@ -221,6 +228,22 @@ const CreateClient = () => {
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
                                     </div>
+                                    <div>
+                                        <label>Medical Expiry Date</label>
+                                        <input
+                                            type="date"
+                                            {...register("medicalExpireDate")}
+                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                        />
+                                        {errors.medicalExpireDate && (
+                                            <span className="text-red-500 block mt-2">
+                                                {
+                                                    errors.medicalExpireDate
+                                                        .message
+                                                }
+                                            </span>
+                                        )}
+                                    </div>
 
                                     <div>
                                         <label>Medical Fit</label>
@@ -269,6 +292,22 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+                                    <div>
+                                        <label>Mofa Status</label>
+                                        <select
+                                            {...register("MofaStatus")}
+                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                        >
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                        {errors.MofaStatus && (
+                                            <span className="text-red-500 block mt-2">
+                                                {errors.MofaStatus.message}
+                                            </span>
+                                        )}
+                                    </div>
 
                                     <div>
                                         <label>MOFA Date</label>
@@ -286,6 +325,23 @@ const CreateClient = () => {
                                             {...register("visaFingerDate")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
+                                    </div>
+
+                                    <div>
+                                        <label>Man Power Status</label>
+                                        <select
+                                            {...register("manPowerStatus")}
+                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                        >
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                        {errors.manPowerStatus && (
+                                            <span className="text-red-500 block mt-2">
+                                                {errors.manPowerStatus.message}
+                                            </span>
+                                        )}
                                     </div>
 
                                     <div>
@@ -380,6 +436,14 @@ const CreateClient = () => {
                                             {...register("passportDelivery")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
+                                        {errors.passportDelivery && (
+                                            <span className="text-red-500 block mt-2">
+                                                {
+                                                    errors.passportDelivery
+                                                        .message
+                                                }
+                                            </span>
+                                        )}
                                     </div>
 
                                     <div>
@@ -396,6 +460,14 @@ const CreateClient = () => {
                                         )}
                                     </div>
 
+                                    <div className="col-span-full">
+                                        <label>Notes</label>
+                                        <textarea
+                                            rows={5}
+                                            {...register("notes")}
+                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
+                                        />
+                                    </div>
                                     <div>
                                         <label>Scan Copy Link</label>
                                         <input
@@ -409,12 +481,39 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
+                                    <div>
+                                        <label>Status</label>
+                                        <select
+                                            {...register("status")}
+                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                        >
+                                            <option value="ACTIVE">
+                                                Active
+                                            </option>
+                                            <option value="PENDING">
+                                                Pending
+                                            </option>
+                                            <option value="CANCELLED">
+                                                Cancelled
+                                            </option>
+                                            <option value="COMPLETED">
+                                                Completed
+                                            </option>
+                                        </select>
+                                        {errors.status && (
+                                            <span className="text-red-500 block mt-2">
+                                                {errors.status.message}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                             </ScrollArea>
 
                             <div className="flex justify-end mt-4">
                                 <button
                                     type="submit"
+                                    disabled={isLoading}
                                     className="border border-gray-500 bg-gray-600 text-white cursor-pointer hover:bg-gray-700 rounded-md px-4 py-2 duration-300"
                                 >
                                     {isLoading

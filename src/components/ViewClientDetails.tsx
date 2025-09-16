@@ -298,7 +298,7 @@ const ViewClientDetails = ({ client }: { client: IClient }) => {
                                             <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
                                                 Notes
                                             </td>
-                                            <td className="border-b border-stone-700 px-2 py-1">
+                                            <td className="whitespace-pre-wrap border-b border-stone-700 px-2 py-1">
                                                 {client?.notes
                                                     ? client.notes
                                                     : "N/A"}
@@ -326,6 +326,16 @@ const ViewClientDetails = ({ client }: { client: IClient }) => {
                                                     : "N/A"}
                                             </td>
                                         </tr>
+                                        {client?.updatedBy && (
+                                            <tr>
+                                                <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                    Last Updated By
+                                                </td>
+                                                <td className="border-b border-stone-700 px-2 py-1">
+                                                    {client?.updatedBy}
+                                                </td>
+                                            </tr>
+                                        )}
                                         <tr>
                                             <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
                                                 Last Updated
