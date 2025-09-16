@@ -13,38 +13,7 @@ import {
 } from "./ui/dialog";
 import { ScrollArea } from "./ui/scroll-area";
 
-export interface Iclient {
-    client: {
-        referenceName?: string;
-        officeName?: string;
-        clientName?: string;
-        dateOfBirth?: string;
-        passportNumber?: string;
-        visaNumber?: string;
-        idNumber?: string;
-        koffileNumber?: string;
-        medicalDate?: string;
-        medicalFit?: boolean;
-        clientNumber?: string;
-        policeClearance?: boolean;
-        training?: boolean;
-        manPowerFingerDate?: string;
-        mofaDate?: string;
-        visaFingerDate?: string;
-        curierDate?: string;
-        visaStatus?: boolean;
-        manPower?: boolean;
-        passportDelivery?: string;
-        ticketDate?: string;
-        scanCopyLink?: string;
-        medicalExpireDate?: string;
-        trainingStatus?: boolean;
-        takammolCertificate?: boolean;
-        medicalStatus?: boolean;
-    };
-}
-
-const ViewClientDetails = ({ client }: IClient) => {
+const ViewClientDetails = ({ client }: { client: IClient }) => {
     console.log("client object 🚀", client);
     console.log(typeof client);
     return (

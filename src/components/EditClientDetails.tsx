@@ -15,7 +15,15 @@ import {
 } from "./ui/dialog";
 import { ScrollArea } from "./ui/scroll-area";
 
-const EditClient = ({ client }: IClient) => {
+type TUserRole = "ADMIN" | "STAFF" | "USER" | "VIEWER";
+
+const EditClient = ({
+    client,
+    userRole,
+}: {
+    client: IClient;
+    userRole?: TUserRole;
+}) => {
     console.log("client in edit form", client.dateOfBirth);
     const clientSchema = z.object({
         referenceName: z.string().min(1, "Reference Name is required"),
@@ -119,6 +127,7 @@ const EditClient = ({ client }: IClient) => {
                         variant="outline"
                         className="size-8 bg-gray-700/90 border border-stone-500 text-white hover:text-gray-300 hover:bg-gray-600 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
                         aria-label="Edit"
+                        disabled={userRole !== "ADMIN" && userRole !== "STAFF"}
                     >
                         <FaEdit className="size-4" />
                     </Button>

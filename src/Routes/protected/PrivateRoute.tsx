@@ -30,7 +30,7 @@ const PrivateRoute = ({ children }: TProtectedRoute) => {
             if (
                 !token ||
                 !user ||
-                (user.role !== "ADMIN" && user.role !== "STAFF")
+                (user.role !== "ADMIN" && user.role !== "STAFF" && user.role !== "VIEWER")
             ) {
                 await logoutApi(null).unwrap();
                 dispatch(logoutUser());

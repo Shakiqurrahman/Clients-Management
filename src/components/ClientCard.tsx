@@ -1,42 +1,38 @@
 import { FaRegTrashAlt } from "react-icons/fa";
 
 import { GoDotFill } from "react-icons/go";
+import {
+    useCurrentToken,
+    type TUserData,
+} from "../redux/features/auth/authSlice";
+import { useAppSelector } from "../redux/hooks";
 import type { IClient } from "../types/clients";
+import { verifyToken } from "../utils/verifyToken";
 import EditClient from "./EditClientDetails";
 import { Button } from "./ui/button";
 import ViewClientDetails from "./ViewClientDetails";
 
-// interface Iclient {
-//     client: {
-//         referenenceName?: string;
-//         officeName?: string;
-//         clientName?: string;
-//         dateOfBirth?: string;
-//         passportNumber?: string;
-//         visaNumber?: string;
-//         idNumber?: string;
-//         koffileNumber?: string;
-//         medicalDate?: string;
-//         medicalFit?: boolean;
-//         clientNumber?: string;
-//         policeClearence?: boolean;
-//         mofaDate?: string;
-//         visaFingerDate?: string;
-//         manPowerFingerDate?: string;
-//         status?: "ACTIVE" | "PENDING" | "CANCELLED" | "COMPLETED";
-//     };
-// }
+const ClientCard = ({ client }: { client: IClient }) => {
+    const token = useAppSelector(useCurrentToken);
 
-const ClientCard = ({ client }: IClient) => {
+    let user: TUserData | null = null;
+    if (token) {
+        user = verifyToken(token) as TUserData;
+    }
     return (
         <div className="flex justify-center items-center py-2 group overflow-hidden relative">
             <div className="w-full max-w-md bg-white/10 border border-stone-700 rounded-xl shadow-lg p-6 relative transition hover:shadow-xl">
                 <div className="absolute top-4 right-4 flex-col gap-2 flex transition-all duration-300 translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 z-20">
                     <ViewClientDetails client={client} />
-                    <EditClient client={client} />
+
+                    <EditClient client={client} userRole={user?.role} />
+
                     <Button
                         variant="outline"
                         className="size-8 bg-gray-700/90 border border-stone-500 text-white hover:text-gray-300 hover:bg-gray-600 transition duration-200 cursor-pointer p-1 rounded-sm flex items-center justify-center"
+                        disabled={
+                            user?.role !== "ADMIN" && user?.role !== "STAFF"
+                        }
                         aria-label="Delete"
                     >
                         <FaRegTrashAlt className="size-4" />

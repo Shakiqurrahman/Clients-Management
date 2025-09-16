@@ -5,7 +5,7 @@ export type TUserData = {
     userId: string;
     fullName: string;
     email: string;
-    role: "ADMIN" | "STAFF" | "USER";
+    role: "ADMIN" | "STAFF" | "USER" | "VIEWER";
 };
 
 const initialState: {

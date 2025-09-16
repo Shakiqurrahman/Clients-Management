@@ -4,6 +4,7 @@ import SearchBar from "../components/SearchBar";
 import { analyticsCardData } from "../constants/AnalyticsCardData";
 import ClientCardSkeleton from "../lib/ClientCardSkeleton";
 import { useGetClientsQuery } from "../redux/features/client/clientApi";
+import type { IClient } from "../types/clients";
 
 const Home = () => {
     const { data: response, isLoading } = useGetClientsQuery(null);
@@ -30,7 +31,7 @@ const Home = () => {
                 ) : clients?.length === 0 ? (
                     <p>No client data found!</p>
                 ) : (
-                    clients?.map((client: any, index: number) => (
+                    clients?.map((client: IClient, index: number) => (
                         <ClientCard key={index} client={client} />
                     ))
                 )}

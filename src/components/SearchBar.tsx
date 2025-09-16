@@ -9,9 +9,22 @@ import {
     SelectValue,
 } from "../components/ui/select";
 
+import {
+    useCurrentToken,
+    type TUserData,
+} from "../redux/features/auth/authSlice";
+import { useAppSelector } from "../redux/hooks";
+import { verifyToken } from "../utils/verifyToken";
 import CreateClient from "./CreateClient";
 
 const SearchBar = () => {
+    const token = useAppSelector(useCurrentToken);
+
+    let user: TUserData | null = null;
+    if (token) {
+        user = verifyToken(token) as TUserData;
+    }
+
     return (
         <div className="flex flex-col gap-2 md:items-center">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -47,7 +60,9 @@ const SearchBar = () => {
                         </SelectContent>
                     </Select>
 
-                    <CreateClient />
+                    {(user?.role === "ADMIN" || user?.role === "STAFF") && (
+                        <CreateClient />
+                    )}
                 </div>
             </div>
         </div>

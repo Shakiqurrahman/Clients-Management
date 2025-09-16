@@ -22,7 +22,7 @@ const CreateEmployee = () => {
         fullName: z.string().min(1, "Name is required"),
         username: z.string().min(1, "Username is required"),
         email: z.string().email("Email must be a valid email address"),
-        role: z.enum(["ADMIN", "STAFF"]),
+        role: z.enum(["ADMIN", "STAFF", "VIEWER"]),
         password: z.string().min(1, "Password is required"),
     });
 
@@ -132,6 +132,9 @@ const CreateEmployee = () => {
                                             <option value="">Select</option>
                                             <option value="ADMIN">Admin</option>
                                             <option value="STAFF">Staff</option>
+                                            <option value="VIEWER">
+                                                Viewer
+                                            </option>
                                         </select>
                                         {errors.role && (
                                             <span className="text-red-500 block mt-2">
