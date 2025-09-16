@@ -2,7 +2,7 @@ import { CiLogout, CiUser } from "react-icons/ci";
 import { FaGear } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { Link } from "react-router";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import logo from "../../public/images/gtt.png";
 import { useLogoutMutation } from "../redux/features/auth/authApi";
 import {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CgSpinnerTwoAlt } from "react-icons/cg";
 import { FaUserPlus } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { useCreateEmployeeMutation } from "../redux/features/employee/employeeApi";
 import { Button } from "./ui/button";

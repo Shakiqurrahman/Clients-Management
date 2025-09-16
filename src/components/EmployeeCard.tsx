@@ -1,6 +1,6 @@
 import { CgSpinnerTwoAlt } from "react-icons/cg";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useDeleteEmployeeMutation } from "../redux/features/employee/employeeApi";
 import EditEmployee from "./EditEmployee";
 import EmployeeDetails from "./EmployeeDetails";
