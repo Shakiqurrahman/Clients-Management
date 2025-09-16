@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaUserPlus } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+import { FaUserPlus } from "react-icons/fa";
 import { z } from "zod";
 import { useCreateClientMutation } from "../redux/features/client/clientApi";
 import { Button } from "./ui/button";
@@ -16,6 +17,8 @@ import {
 import { ScrollArea } from "./ui/scroll-area";
 
 const CreateClient = () => {
+    const [open, setOpen] = useState(false);
+
     const [createClient, { isLoading }] = useCreateClientMutation();
 
     const clientSchema = z.object({
@@ -26,10 +29,10 @@ const CreateClient = () => {
         passportNumber: z.string().min(1, "Passport Number is required"),
         visaNumber: z.string().min(1, "Visa Number is required"),
         idNumber: z.string().min(1, "ID Number is required"),
-        kofeelNumber: z.string().min(1, "Koffile Number is required"),
+        kofeelNumber: z.string().min(1, "Kofeel Number is required"),
         medicalDate: z.string().optional(),
         medicalExpireDate: z.string().optional(),
-        medicalStatus: z.enum(["Fit", "Unfit", "No", "Yes"]),
+        medicalStatus: z.enum(["Yes", "No"]),
         clientNumber: z.string().min(1, "Client Number is required"),
         policeClearance: z.enum(["Yes", "No"]),
         mofaDate: z.string().optional(),
@@ -37,7 +40,7 @@ const CreateClient = () => {
         manPowerFingerDate: z.string().optional(),
         trainingStatus: z.enum(["Yes", "No"]),
         TakammolCertificate: z.enum(["Yes", "No"]),
-        courierDate: z.string().min(1, "Curier Date is required"),
+        courierDate: z.string().min(1, "Courier Date is required"),
         visaStatus: z.enum(["Yes", "No"]),
         passportDelivery: z.string().optional(),
         ticketDate: z.string().min(1, "Ticket Date is required"),
@@ -50,25 +53,36 @@ const CreateClient = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<ClientFormValues>({
         resolver: zodResolver(clientSchema),
     });
 
     const onSubmit = async (data: ClientFormValues) => {
-        console.log(data);
-        // handle form submission
+        const transformedData = {
+            ...data,
+            medicalStatus: data.medicalStatus === "Yes",
+            policeClearance: data.policeClearance === "Yes",
+            trainingStatus: data.trainingStatus === "Yes",
+            visaStatus: data.visaStatus === "Yes",
+            TakammolCertificate: data.TakammolCertificate === "Yes",
+        };
         try {
-            await createClient(data).unwrap();
+            await createClient(transformedData).unwrap();
             toast.success("Client created successfully!");
-        } catch (error) {
+            reset();
+        } catch {
             toast.error("Failed to create client. Please try again.");
-            console.error("Error creating client:", error);
+        } finally {
+            setOpen(false);
         }
     };
+
     return (
-        <Dialog>
+        <Dialog open={open}>
             <DialogTrigger asChild>
                 <Button
+                    onClick={() => setOpen(true)}
                     variant="outline"
                     className="bg-white/5 border border-stone-500 text-white hover:text-gray-300 hover:bg-white/10 transition duration-300 cursor-pointer flex gap-2 items-center"
                 >
@@ -81,15 +95,17 @@ const CreateClient = () => {
                 <DialogHeader>
                     <DialogTitle>Create Profile</DialogTitle>
                     <DialogDescription>
-                        <ScrollArea className="rounded-sm border h-[60vh] sm:h-[70vh] border-gray-500">
-                            <form
-                                onSubmit={handleSubmit(onSubmit)}
-                                className="space-y-4 p-4"
-                            >
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 gap-x-8 text-gray-300">
+                        {/* The form now contains the ScrollArea and the submit button */}
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="space-y-4 p-4"
+                        >
+                            <ScrollArea className="rounded-sm border h-[60vh] sm:h-[70vh] border-gray-500">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 gap-x-8 text-gray-300 p-4">
                                     <div>
                                         <label>Reference Name</label>
                                         <input
+                                            type="text"
                                             {...register("referenceName")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -102,6 +118,7 @@ const CreateClient = () => {
                                     <div>
                                         <label>Office Name</label>
                                         <input
+                                            type="text"
                                             {...register("officeName")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -111,9 +128,11 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Client Name</label>
                                         <input
+                                            type="text"
                                             {...register("clientName")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -123,6 +142,7 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Date Of Birth</label>
                                         <input
@@ -136,9 +156,11 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Passport Number</label>
                                         <input
+                                            type="text"
                                             {...register("passportNumber")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -148,9 +170,11 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Visa Number</label>
                                         <input
+                                            type="text"
                                             {...register("visaNumber")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -160,9 +184,11 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>ID Number</label>
                                         <input
+                                            type="text"
                                             {...register("idNumber")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -172,9 +198,11 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
-                                        <label>Koffile Number</label>
+                                        <label>Kofeel Number</label>
                                         <input
+                                            type="text"
                                             {...register("kofeelNumber")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -184,6 +212,7 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Medical Date</label>
                                         <input
@@ -191,12 +220,8 @@ const CreateClient = () => {
                                             {...register("medicalDate")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
-                                        {/* {errors.medicalDate && (
-                                                <span className="text-red-500 block mt-2">
-                                                    {errors.medicalDate.message}
-                                                </span>
-                                            )} */}
                                     </div>
+
                                     <div>
                                         <label>Medical Fit</label>
                                         <select
@@ -213,9 +238,11 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Client Number</label>
                                         <input
+                                            type="text"
                                             {...register("clientNumber")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -225,8 +252,9 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
-                                        <label>Police Clearence</label>
+                                        <label>Police Clearance</label>
                                         <select
                                             {...register("policeClearance")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
@@ -241,6 +269,7 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>MOFA Date</label>
                                         <input
@@ -248,12 +277,8 @@ const CreateClient = () => {
                                             {...register("mofaDate")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
-                                        {errors.mofaDate && (
-                                            <span className="text-red-500 block mt-2">
-                                                {errors.mofaDate.message}
-                                            </span>
-                                        )}
                                     </div>
+
                                     <div>
                                         <label>Visa Finger Date</label>
                                         <input
@@ -261,12 +286,8 @@ const CreateClient = () => {
                                             {...register("visaFingerDate")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
-                                        {errors.visaFingerDate && (
-                                            <span className="text-red-500 block mt-2">
-                                                {errors.visaFingerDate.message}
-                                            </span>
-                                        )}
                                     </div>
+
                                     <div>
                                         <label>Man Power Finger</label>
                                         <input
@@ -283,6 +304,7 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Training</label>
                                         <select
@@ -299,8 +321,29 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
-                                        <label>Curier Date</label>
+                                        <label>Takammol Certificate</label>
+                                        <select
+                                            {...register("TakammolCertificate")}
+                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                        >
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                        {errors.TakammolCertificate && (
+                                            <span className="text-red-500 block mt-2">
+                                                {
+                                                    errors.TakammolCertificate
+                                                        .message
+                                                }
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <label>Courier Date</label>
                                         <input
                                             type="date"
                                             {...register("courierDate")}
@@ -312,6 +355,7 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Visa Status</label>
                                         <select
@@ -336,15 +380,8 @@ const CreateClient = () => {
                                             {...register("passportDelivery")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
-                                        {/* {errors.passportDelivery && (
-                                                <span className="text-red-500 block mt-2">
-                                                    {
-                                                        errors.passportDelivery
-                                                            .message
-                                                    }
-                                                </span>
-                                            )} */}
                                     </div>
+
                                     <div>
                                         <label>Ticket Date</label>
                                         <input
@@ -358,9 +395,11 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
+
                                     <div>
                                         <label>Scan Copy Link</label>
                                         <input
+                                            type="text"
                                             {...register("scanCopy")}
                                             className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2"
                                         />
@@ -370,16 +409,20 @@ const CreateClient = () => {
                                             </span>
                                         )}
                                     </div>
-                                </div>{" "}
-                            </form>
-                        </ScrollArea>
+                                </div>
+                            </ScrollArea>
 
-                        <button
-                            type="submit"
-                            className="border border-gray-500 bg-gray-600 text-white cursor-pointer hover:bg-gray-700 rounded-md p-2 mt-4 duration-300"
-                        >
-                            {isLoading ? "Creating..." : "Create Client"}
-                        </button>
+                            <div className="flex justify-end mt-4">
+                                <button
+                                    type="submit"
+                                    className="border border-gray-500 bg-gray-600 text-white cursor-pointer hover:bg-gray-700 rounded-md px-4 py-2 duration-300"
+                                >
+                                    {isLoading
+                                        ? "Creating..."
+                                        : "Create Client"}
+                                </button>
+                            </div>
+                        </form>
                     </DialogDescription>
                 </DialogHeader>
             </DialogContent>

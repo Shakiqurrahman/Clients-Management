@@ -1,8 +1,9 @@
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { CiLogout, CiUser } from "react-icons/ci";
 import { FaGear } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { Link } from "react-router";
-import { toast } from "react-hot-toast";
 import logo from "../../public/images/gtt.png";
 import { useLogoutMutation } from "../redux/features/auth/authApi";
 import {
@@ -15,6 +16,7 @@ import { verifyToken } from "../utils/verifyToken";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const Header = () => {
+    const [open, setOpen] = useState(false);
     const [logoutApi] = useLogoutMutation();
     const dispatch = useAppDispatch();
     const token = useAppSelector(useCurrentToken);
@@ -27,6 +29,7 @@ const Header = () => {
     const handleLogout = async () => {
         dispatch(logoutUser());
         toast.success("Logout Successful");
+        setOpen(false);
         await logoutApi(null).unwrap();
     };
 
@@ -36,7 +39,7 @@ const Header = () => {
                 <img src={logo} alt="logo" className="size-12 sm:size-16" />
                 <h1 className="text-lg font-semibold">Grameen Travels</h1>
             </Link>
-            <Popover>
+            <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger>
                     <div className="flex items-center gap-2 cursor-pointer">
                         <div className="*:block text-right text-sm leading-4 hidden sm:block">
@@ -54,6 +57,7 @@ const Header = () => {
                 >
                     <Link
                         to={"/reset-password"}
+                        onClick={() => setOpen(false)}
                         className="flex items-center gap-2 cursor-pointer hover:text-gray-200 duration-200 mx-2 hover:mx-4"
                     >
                         <FaGear /> <p>Edit Password</p>
@@ -61,6 +65,7 @@ const Header = () => {
                     {user?.role === "ADMIN" && (
                         <Link
                             to={"/employees"}
+                            onClick={() => setOpen(false)}
                             className="flex items-center gap-2 cursor-pointer hover:text-gray-200 duration-200 mx-2 hover:mx-4"
                         >
                             <IoPersonSharp />

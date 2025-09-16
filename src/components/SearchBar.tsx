@@ -37,24 +37,29 @@ const SearchBar = () => {
                     />
                 </div>
                 <div className="flex gap-2 mt-2 sm:mt-0 sm:justify-between w-full">
-                    <Select>
+                    <Select defaultValue="this_month">
                         <SelectTrigger className="w-[180px] border border-stone-500 bg-white/5">
-                            <SelectValue
-                                className="text-white"
-                                placeholder="Select a fruit"
-                            />
+                            <SelectValue className="text-white" />
                         </SelectTrigger>
                         <SelectContent className="bg-white/10 backdrop-blur-xl text-white border-0">
                             <SelectGroup>
-                                <SelectLabel>Fruits</SelectLabel>
-                                <SelectItem value="apple">Apple</SelectItem>
-                                <SelectItem value="banana">Banana</SelectItem>
-                                <SelectItem value="blueberry">
-                                    Blueberry
+                                <SelectLabel>Filter by</SelectLabel>
+                                <SelectItem value="today">Today</SelectItem>
+                                <SelectItem value="this_week">This Week</SelectItem>
+                                <SelectItem value="this_month">
+                                    This Month
                                 </SelectItem>
-                                <SelectItem value="grapes">Grapes</SelectItem>
-                                <SelectItem value="pineapple">
-                                    Pineapple
+                                <SelectItem value="last_month">
+                                    Last Month
+                                </SelectItem>
+                                <SelectItem value="6_months">
+                                    6 Months
+                                </SelectItem>
+                                <SelectItem value="this_year">
+                                    This Year
+                                </SelectItem>
+                                <SelectItem value="all_time">
+                                    All Time
                                 </SelectItem>
                             </SelectGroup>
                         </SelectContent>

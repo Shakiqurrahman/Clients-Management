@@ -65,7 +65,7 @@ const ClientCard = ({ client }: { client: IClient }) => {
                     </span>
                     <span className="ml-2">{client.visaNumber || "N/A"}</span>
                 </div>
-                <div className="absolute top-3 right-3">
+                <div className="absolute top-2.5 right-2.5">
                     {client?.status === "CANCELLED" ? (
                         <div className="border border-rose-600 text-rose-600 flex items-center bg-[#ffe0e0] px-1.5 py-[1px] rounded-[10px] text-[12px]">
                             <GoDotFill className="text-xs" />

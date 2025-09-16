@@ -1,7 +1,10 @@
 import { FaEye } from "react-icons/fa6";
 
 import type { IClient } from "../types/clients";
-import { formatDateToLongDate } from "../utils/timeFormatHandler";
+import {
+    formatDateTime,
+    formatDateToLongDate,
+} from "../utils/timeFormatHandler";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -14,8 +17,6 @@ import {
 import { ScrollArea } from "./ui/scroll-area";
 
 const ViewClientDetails = ({ client }: { client: IClient }) => {
-    console.log("client object 🚀", client);
-    console.log(typeof client);
     return (
         <Dialog>
             <form>
@@ -310,6 +311,30 @@ const ViewClientDetails = ({ client }: { client: IClient }) => {
                                             <td className="border-b border-stone-700 px-2 py-1">
                                                 {client?.status
                                                     ? client.status
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Record Created
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.createdAt
+                                                    ? formatDateTime(
+                                                          client.createdAt
+                                                      )
+                                                    : "N/A"}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="border-b border-stone-700 px-2 py-1 font-semibold capitalize">
+                                                Last Updated
+                                            </td>
+                                            <td className="border-b border-stone-700 px-2 py-1">
+                                                {client?.createdAt
+                                                    ? formatDateTime(
+                                                          client.updatedAt
+                                                      )
                                                     : "N/A"}
                                             </td>
                                         </tr>

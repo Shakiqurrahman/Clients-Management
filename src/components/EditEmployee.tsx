@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { CgSpinnerTwoAlt } from "react-icons/cg";
 import { FaEdit } from "react-icons/fa";
-import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { useUpdateEmployeeMutation } from "../redux/features/employee/employeeApi";
 import type { IEmployee } from "./EmployeeCard";
@@ -54,16 +54,15 @@ const EditEmployee = ({ employee }: { employee: IEmployee }) => {
     });
 
     const onSubmit = async (data: EmployeeFormValues) => {
-        console.log(data);
         try {
             const payload = { ...data, id: employee.id };
             await updateEmployee(payload);
             toast.success("Employee updated successfully");
-            // ✅ optionally reset form or close dialog here
             setShowDialog(false);
             reset();
         } catch (error) {
             console.error("Failed to update employee:", error);
+            toast.error("Failed to create an employee");
         }
     };
     return (

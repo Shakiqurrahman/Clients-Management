@@ -9,7 +9,7 @@ const ClientCardSkeleton = () => {
                     <div className="h-[14.5px] w-5/6 bg-gray-600/40 rounded" />
                     {/* <div className="h-[14.5px] w-1/3 bg-gray-600/40 rounded" /> */}
                 </div>
-                <div className="absolute top-3 right-3">
+                <div className="absolute top-2.5 right-2.5">
                     <div className="h-5 w-20 rounded-xl bg-gray-600/40"></div>
                 </div>
             </div>

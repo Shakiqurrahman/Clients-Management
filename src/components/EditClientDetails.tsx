@@ -24,7 +24,6 @@ const EditClient = ({
     client: IClient;
     userRole?: TUserRole;
 }) => {
-    console.log("client in edit form", client.dateOfBirth);
     const clientSchema = z.object({
         referenceName: z.string().min(1, "Reference Name is required"),
         officeName: z.string().min(1, "Office Name is required"),
