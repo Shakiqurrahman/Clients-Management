@@ -3,6 +3,7 @@ import { toast } from "react-hot-toast";
 import { CiLogout, CiUser } from "react-icons/ci";
 import { FaGear } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
+import { MdAutoDelete } from "react-icons/md";
 import { Link } from "react-router";
 import logo from "../../public/images/gtt.png";
 import { useLogoutMutation } from "../redux/features/auth/authApi";
@@ -52,7 +53,7 @@ const Header = () => {
                     </div>
                 </PopoverTrigger>
                 <PopoverContent
-                    className="bg-stone-800/60 backdrop-blur-xl border-0 space-y-2 w-48 text-gray-300 mt-1"
+                    className="bg-stone-800/60 backdrop-blur-xl border-0 space-y-2 w-50 text-gray-300 mt-1"
                     align="end"
                 >
                     <Link
@@ -70,6 +71,16 @@ const Header = () => {
                         >
                             <IoPersonSharp />
                             <p>Employees</p>
+                        </Link>
+                    )}
+                    {user?.role === "ADMIN" && (
+                        <Link
+                            to={"/deleted-history"}
+                            onClick={() => setOpen(false)}
+                            className="flex items-center gap-2 cursor-pointer hover:text-gray-200 duration-200 mx-2 hover:mx-4"
+                        >
+                            <MdAutoDelete />
+                            <p>Deleted Stories</p>
                         </Link>
                     )}
                     <button

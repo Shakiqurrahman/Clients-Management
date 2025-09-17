@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router";
+import DeletedHistory from "../pages/DeletedHistory";
 import Employees from "../pages/Employees";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -26,6 +27,14 @@ export const router = createBrowserRouter([
                 element: (
                     <AdminProtected>
                         <Employees />
+                    </AdminProtected>
+                ),
+            },
+            {
+                path: "/deleted-history",
+                element: (
+                    <AdminProtected>
+                        <DeletedHistory />
                     </AdminProtected>
                 ),
             },
