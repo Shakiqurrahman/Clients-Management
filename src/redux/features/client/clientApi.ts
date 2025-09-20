@@ -11,6 +11,15 @@ const clientApi = baseApi.injectEndpoints({
             transformResponse: (response) => response?.data,
         }),
 
+        getDeletedClients: builder.query({
+            query: () => ({
+                url: "/clients/history",
+                method: "GET",
+            }),
+            providesTags: ["client"],
+            transformResponse: (response) => response?.data,
+        }),
+
         createClient: builder.mutation({
             query: (body) => ({
                 url: "/clients",
@@ -41,6 +50,7 @@ const clientApi = baseApi.injectEndpoints({
 
 export const {
     useGetClientsQuery,
+    useGetDeletedClientsQuery,
     useCreateClientMutation,
     useUpdateClientMutation,
     useDeleteClientMutation,
