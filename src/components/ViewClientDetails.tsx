@@ -121,7 +121,7 @@ const ViewClientDetails = ({ client }: { client: IClient }) => {
                                                 Koffile Number
                                             </td>
                                             <td className="border-b border-stone-700 px-2 py-1">
-                                                {client?.koffileNumber || "N/A"}
+                                                {client?.kofeelNumber || "N/A"}
                                             </td>
                                         </tr>
                                         <tr>

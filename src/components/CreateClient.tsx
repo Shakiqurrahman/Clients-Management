@@ -22,35 +22,35 @@ const CreateClient = () => {
     const [createClient, { isLoading }] = useCreateClientMutation();
 
     const clientSchema = z.object({
-        referenceName: z.string().min(1, "Reference Name is required"),
-        officeName: z.string().min(1, "Office Name is required"),
+        referenceName: z.string().optional(),
+        officeName: z.string().optional(),
         clientName: z.string().min(1, "Client Name is required"),
-        dateOfBirth: z.string().min(1, "Date of Birth is required"),
-        passportNumber: z.string().min(1, "Passport Number is required"),
-        visaNumber: z.string().min(1, "Visa Number is required"),
-        idNumber: z.string().min(1, "ID Number is required"),
-        kofeelNumber: z.string().min(1, "Kofeel Number is required"),
+        dateOfBirth: z.string().optional(),
+        passportNumber: z.string().optional(),
+        visaNumber: z.string().optional(),
+        idNumber: z.string().optional(),
+        kofeelNumber: z.string().optional(),
         medicalDate: z.string().optional(),
-        medicalExpireDate: z.string(),
-        medicalStatus: z.enum(["Yes", "No"]),
-        clientNumber: z.string().min(1, "Client Number is required"),
-        policeClearance: z.enum(["Yes", "No"]),
-        MofaStatus: z.enum(["Yes", "No"]),
+        medicalExpireDate: z.string().optional(),
+        medicalStatus: z.enum(["Yes", "No"]).optional(),
+        clientNumber: z.string().optional(),
+        policeClearance: z.enum(["Yes", "No"]).optional(),
+        MofaStatus: z.enum(["Yes", "No"]).optional(),
         mofaDate: z.string().optional(),
         visaFingerDate: z.string().optional(),
-        manPowerStatus: z.enum(["Yes", "No"]),
+        manPowerStatus: z.enum(["Yes", "No"]).optional(),
         manPowerFingerDate: z.string().optional(),
-        trainingStatus: z.enum(["Yes", "No"]),
-        TakammolCertificate: z.enum(["Yes", "No"]),
-        courierDate: z.string().min(1, "Courier Date is required"),
-        visaStatus: z.enum(["Yes", "No"]),
-        passportDelivery: z
-            .string()
-            .min(1, "Passport Delivery Date is required"),
-        ticketDate: z.string().min(1, "Ticket Date is required"),
+        trainingStatus: z.enum(["Yes", "No"]).optional(),
+        TakammolCertificate: z.enum(["Yes", "No"]).optional(),
+        courierDate: z.string().optional(),
+        visaStatus: z.enum(["Yes", "No"]).optional(),
+        passportDelivery: z.string().optional(),
+        ticketDate: z.string().optional(),
         notes: z.string().optional(),
-        scanCopy: z.string().url("Scan Copy Link must be a valid URL"),
-        status: z.enum(["ACTIVE", "PENDING", "CANCELLED", "COMPLETED"]),
+        scanCopy: z.string().optional(),
+        status: z
+            .enum(["ACTIVE", "PENDING", "CANCELLED", "COMPLETED"])
+            .optional(),
     });
 
     type ClientFormValues = z.infer<typeof clientSchema>;
