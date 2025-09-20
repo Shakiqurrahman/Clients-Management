@@ -32,35 +32,35 @@ const EditClient = ({
     const [updateClient, { isLoading }] = useUpdateClientMutation();
 
     const clientSchema = z.object({
-        referenceName: z.string().min(1, "Reference Name is required"),
-        officeName: z.string().min(1, "Office Name is required"),
+        referenceName: z.string().optional(),
+        officeName: z.string().optional(),
         clientName: z.string().min(1, "Client Name is required"),
-        dateOfBirth: z.string().min(1, "Date of Birth is required"),
-        passportNumber: z.string().min(1, "Passport Number is required"),
-        visaNumber: z.string().min(1, "Visa Number is required"),
-        idNumber: z.string().min(1, "ID Number is required"),
-        kofeelNumber: z.string().min(1, "Koffile Number is required"),
-        medicalDate: z.string().min(1, "Medical Date is required"),
-        medicalExpireDate: z.string().min(1, "Medical Date is required"),
-        medicalStatus: z.enum(["Yes", "No"]),
-        clientNumber: z.string().min(1, "Client Number is required"),
-        policeClearance: z.enum(["Yes", "No"]),
-        MofaStatus: z.enum(["Yes", "No"]),
-        mofaDate: z.string().min(1, "MOFA Date is required"),
-        visaFingerDate: z.string().min(1, "Visa Finger Date is required"),
-        manPowerStatus: z.enum(["Yes", "No"]),
-        manPowerFingerDate: z
-            .string()
-            .min(1, "Man power finger date is required"),
-        trainingStatus: z.enum(["Yes", "No"]),
-        TakammolCertificate: z.enum(["Yes", "No"]),
-        courierDate: z.string().min(1, "Curier Date is required"),
-        visaStatus: z.enum(["Yes", "No"]),
-        passportDelivery: z.string().min(1, "Passport Delivery is required"),
-        ticketDate: z.string().min(1, "Ticket Date is required"),
+        dateOfBirth: z.string().optional(),
+        passportNumber: z.string().optional(),
+        visaNumber: z.string().optional(),
+        idNumber: z.string().optional(),
+        kofeelNumber: z.string().optional(),
+        medicalDate: z.string().optional(),
+        medicalExpireDate: z.string().optional(),
+        medicalStatus: z.enum(["Yes", "No"]).optional(),
+        clientNumber: z.string().optional(),
+        policeClearance: z.enum(["Yes", "No"]).optional(),
+        MofaStatus: z.enum(["Yes", "No"]).optional(),
+        mofaDate: z.string().optional(),
+        visaFingerDate: z.string().optional(),
+        manPowerStatus: z.enum(["Yes", "No"]).optional(),
+        manPowerFingerDate: z.string().optional(),
+        trainingStatus: z.enum(["Yes", "No"]).optional(),
+        TakammolCertificate: z.enum(["Yes", "No"]).optional(),
+        courierDate: z.string().optional(),
+        visaStatus: z.enum(["Yes", "No"]).optional(),
+        passportDelivery: z.string().optional(),
+        ticketDate: z.string().optional(),
         notes: z.string().optional(),
-        scanCopy: z.string().url("Scan Copy Link must be a valid URL"),
-        status: z.enum(["ACTIVE", "PENDING", "CANCELLED", "COMPLETED"]),
+        scanCopy: z.string().optional(),
+        status: z
+            .enum(["ACTIVE", "PENDING", "CANCELLED", "COMPLETED"])
+            .optional(),
     });
 
     type ClientFormValues = z.infer<typeof clientSchema>;
@@ -73,69 +73,69 @@ const EditClient = ({
     } = useForm<ClientFormValues>({
         resolver: zodResolver(clientSchema),
         defaultValues: {
-            referenceName: client.referenceName || "",
-            officeName: client.officeName || "",
-            clientName: client.clientName || "",
-            dateOfBirth: formatDateForInput(client.dateOfBirth) || "",
-            passportNumber: client.passportNumber || "",
-            visaNumber: client.visaNumber || "",
-            idNumber: client.idNumber || "",
-            kofeelNumber: client.kofeelNumber || "",
-            medicalDate: formatDateForInput(client.medicalDate) || "",
+            referenceName: client?.referenceName || "",
+            officeName: client?.officeName || "",
+            clientName: client?.clientName || "",
+            dateOfBirth: formatDateForInput(client?.dateOfBirth) || "",
+            passportNumber: client?.passportNumber || "",
+            visaNumber: client?.visaNumber || "",
+            idNumber: client?.idNumber || "",
+            kofeelNumber: client?.kofeelNumber || "",
+            medicalDate: formatDateForInput(client?.medicalDate) || "",
             medicalExpireDate:
-                formatDateForInput(client.medicalExpireDate) || "",
+                formatDateForInput(client?.medicalExpireDate) || "",
             medicalStatus:
-                typeof client.medicalStatus === "boolean"
-                    ? client.medicalStatus
+                typeof client?.medicalStatus === "boolean"
+                    ? client?.medicalStatus
                         ? "Yes"
                         : "No"
-                    : client.medicalStatus || "No",
-            clientNumber: client.clientNumber || "",
+                    : client?.medicalStatus || "No",
+            clientNumber: client?.clientNumber || "",
             policeClearance:
-                typeof client.policeClearance === "boolean"
-                    ? client.policeClearance
+                typeof client?.policeClearance === "boolean"
+                    ? client?.policeClearance
                         ? "Yes"
                         : "No"
-                    : client.policeClearance || "No",
+                    : client?.policeClearance || "No",
             MofaStatus:
-                typeof client.MofaStatus === "boolean"
-                    ? client.MofaStatus
+                typeof client?.MofaStatus === "boolean"
+                    ? client?.MofaStatus
                         ? "Yes"
                         : "No"
-                    : client.MofaStatus || "No",
-            mofaDate: formatDateForInput(client.mofaDate) || "",
-            visaFingerDate: formatDateForInput(client.visaFingerDate) || "",
+                    : client?.MofaStatus || "No",
+            mofaDate: formatDateForInput(client?.mofaDate) || "",
+            visaFingerDate: formatDateForInput(client?.visaFingerDate) || "",
             manPowerStatus:
-                typeof client.manPowerStatus === "boolean"
-                    ? client.manPowerStatus
+                typeof client?.manPowerStatus === "boolean"
+                    ? client?.manPowerStatus
                         ? "Yes"
                         : "No"
-                    : client.manPowerStatus || "No",
+                    : client?.manPowerStatus || "No",
             manPowerFingerDate:
-                formatDateForInput(client.manPowerFingerDate) || "",
+                formatDateForInput(client?.manPowerFingerDate) || "",
             trainingStatus:
-                typeof client.trainingStatus === "boolean"
-                    ? client.trainingStatus
+                typeof client?.trainingStatus === "boolean"
+                    ? client?.trainingStatus
                         ? "Yes"
                         : "No"
-                    : client.trainingStatus || "No",
+                    : client?.trainingStatus || "No",
             TakammolCertificate:
-                typeof client.TakammolCertificate === "boolean"
-                    ? client.TakammolCertificate
+                typeof client?.TakammolCertificate === "boolean"
+                    ? client?.TakammolCertificate
                         ? "Yes"
                         : "No"
-                    : client.TakammolCertificate || "No",
-            courierDate: formatDateForInput(client.courierDate) || "",
+                    : client?.TakammolCertificate || "No",
+            courierDate: formatDateForInput(client?.courierDate) || "",
             visaStatus:
-                typeof client.visaStatus === "boolean"
-                    ? client.visaStatus
+                typeof client?.visaStatus === "boolean"
+                    ? client?.visaStatus
                         ? "Yes"
                         : "No"
-                    : client.visaStatus || "No",
-            passportDelivery: formatDateForInput(client.passportDelivery) || "",
-            ticketDate: formatDateForInput(client.ticketDate) || "",
-            notes: client.notes || "",
-            scanCopy: client.scanCopy || "",
+                    : client?.visaStatus || "No",
+            passportDelivery: formatDateForInput(client?.passportDelivery) || "",
+            ticketDate: formatDateForInput(client?.ticketDate) || "",
+            notes: client?.notes || "",
+            scanCopy: client?.scanCopy || "",
             status: client?.status,
         },
     });
