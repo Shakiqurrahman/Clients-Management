@@ -45,7 +45,9 @@ const SearchBar = () => {
                             <SelectGroup>
                                 <SelectLabel>Filter by</SelectLabel>
                                 <SelectItem value="today">Today</SelectItem>
-                                <SelectItem value="this_week">This Week</SelectItem>
+                                <SelectItem value="this_week">
+                                    This Week
+                                </SelectItem>
                                 <SelectItem value="this_month">
                                     This Month
                                 </SelectItem>

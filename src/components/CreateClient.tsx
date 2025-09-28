@@ -51,6 +51,7 @@ const CreateClient = () => {
         status: z
             .enum(["ACTIVE", "PENDING", "CANCELLED", "COMPLETED"])
             .optional(),
+        wakala: z.enum(["Yes", "No"]).optional(),
     });
 
     type ClientFormValues = z.infer<typeof clientSchema>;
@@ -456,6 +457,22 @@ const CreateClient = () => {
                                         {errors.ticketDate && (
                                             <span className="text-red-500 block mt-2">
                                                 {errors.ticketDate.message}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label>Wakala</label>
+                                        <select
+                                            {...register("wakala")}
+                                            className="border border-gray-500 w-full outline-0 rounded-md px-2 py-1 text-gray-200 mt-2 bg-gray-600"
+                                        >
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                        {errors.visaStatus && (
+                                            <span className="text-red-500 block mt-2">
+                                                {errors.visaStatus.message}
                                             </span>
                                         )}
                                     </div>

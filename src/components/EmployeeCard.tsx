@@ -1,6 +1,6 @@
+import { toast } from "react-hot-toast";
 import { CgSpinnerTwoAlt } from "react-icons/cg";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { toast } from "react-hot-toast";
 import { useDeleteEmployeeMutation } from "../redux/features/employee/employeeApi";
 import EditEmployee from "./EditEmployee";
 import EmployeeDetails from "./EmployeeDetails";
@@ -41,7 +41,7 @@ const EmployeeCard = ({ employee }: { employee: IEmployee }) => {
 
     return (
         <div className="flex justify-center items-center py-2 group overflow-hidden">
-            <div className="w-full max-w-md bg-white/10 border border-stone-700 rounded-xl shadow-lg p-6 relative transition hover:shadow-xl">
+            <div className="w-full h-full max-w-md bg-white/10 border border-stone-700 rounded-xl shadow-lg p-6 relative transition hover:shadow-xl">
                 <div className="absolute top-4 right-4 flex-col gap-2 flex transition-all duration-300 translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
                     <EmployeeDetails employee={employee} />
                     <EditEmployee employee={employee} />

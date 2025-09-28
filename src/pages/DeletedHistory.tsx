@@ -1,12 +1,29 @@
+import toast from "react-hot-toast";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
 import { TbRestore } from "react-icons/tb";
-import { useGetDeletedClientsQuery } from "../redux/features/client/clientApi";
+import {
+    useGetDeletedClientsQuery,
+    useRestoreClientMutation,
+} from "../redux/features/client/clientApi";
 import type { IClient } from "../types/clients";
 import { formatDateToLongDate } from "../utils/timeFormatHandler";
 
 const DeletedHistory = () => {
     const { data, isLoading } = useGetDeletedClientsQuery({});
+    const [restoreClient, { isLoading: restoring }] =
+        useRestoreClientMutation();
     console.log(data);
+
+    const handleRestore = async (id: string) => {
+        const loadingToast = toast.loading("Deleting client...");
+        try {
+            await restoreClient(id).unwrap();
+            toast.success("Client restored successfully", { id: loadingToast });
+        } catch {
+            toast.error("Failed to restore client", { id: loadingToast });
+        }
+    };
 
     return (
         <div className="bg-gray-800 rounded-md p-2 sm:p-4 sm:px-6 max-width mt-20">
@@ -67,16 +84,15 @@ const DeletedHistory = () => {
                                     <td className="flex items-center gap-1 p-3">
                                         <button
                                             className="bg-blue-400 text-white p-1.5 rounded-sm cursor-pointer shrink-0"
-                                            // onClick={() =>
-                                            //     // handleDelete(value.id)
-                                            // }
+                                            onClick={() =>
+                                                handleRestore(client.id)
+                                            }
                                         >
-                                            {/* {isLoading &&
-                                            value.id === deletingId ? (
+                                            {restoring ? (
                                                 <AiOutlineLoading3Quarters className="text-md animate-spin duration-300" />
-                                            ) : ( */}
-                                            <TbRestore className="text-md" />
-                                            {/* )} */}
+                                            ) : (
+                                                <TbRestore className="text-md" />
+                                            )}
                                         </button>
                                         <button
                                             className="bg-red-400 text-white p-1.5 rounded-sm cursor-pointer shrink-0"

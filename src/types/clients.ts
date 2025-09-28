@@ -33,4 +33,5 @@ export interface IClient {
     isDeleted: boolean;
     createdAt: string;
     updatedAt: string;
+    data: any;
 }
